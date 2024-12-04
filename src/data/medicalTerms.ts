@@ -1,191 +1,111 @@
-export const prefixes = [
-  { value: "osteo", label: "Osteo-", meaning: "bone" },
-  { value: "cardio", label: "Cardio-", meaning: "heart" },
-  { value: "dermat", label: "Dermat-", meaning: "skin" },
-  { value: "gastro", label: "Gastro-", meaning: "stomach" },
-  { value: "neuro", label: "Neuro-", meaning: "nerve or nervous system" },
-  { value: "arthro", label: "Arthro-", meaning: "joint" },
-  { value: "hepato", label: "Hepato-", meaning: "liver" },
-  { value: "nephro", label: "Nephro-", meaning: "kidney" },
-  { value: "pneumo", label: "Pneumo-", meaning: "lung" },
-  { value: "rhino", label: "Rhino-", meaning: "nose" },
-  { value: "ophthalmo", label: "Ophthalmo-", meaning: "eye" },
-  { value: "oto", label: "Oto-", meaning: "ear" },
-  { value: "hemato", label: "Hemato-", meaning: "blood" },
-  { value: "myelo", label: "Myelo-", meaning: "bone marrow or spinal cord" },
-  { value: "adeno", label: "Adeno-", meaning: "gland" }
-];
-
-export const suffixes = [
-  { value: "itis", label: "-itis", meaning: "inflammation" },
-  { value: "ectomy", label: "-ectomy", meaning: "surgical removal" },
-  { value: "ology", label: "-ology", meaning: "study of" },
-  { value: "algia", label: "-algia", meaning: "pain" },
-  { value: "oma", label: "-oma", meaning: "tumor" },
-  { value: "plasty", label: "-plasty", meaning: "surgical repair" },
-  { value: "scopy", label: "-scopy", meaning: "visual examination" },
-  { value: "pathy", label: "-pathy", meaning: "disease" },
-  { value: "megaly", label: "-megaly", meaning: "enlargement" },
-  { value: "stenosis", label: "-stenosis", meaning: "narrowing" },
-  { value: "osis", label: "-osis", meaning: "abnormal condition" },
-  { value: "gram", label: "-gram", meaning: "visual record" },
-  { value: "rrhea", label: "-rrhea", meaning: "flow or discharge" },
-  { value: "phobia", label: "-phobia", meaning: "fear" },
-  { value: "lysis", label: "-lysis", meaning: "breakdown or destruction" }
-];
-
-type CombinationKey = `${string}-${string}`;
-
 export const combinationExplanations: Record<CombinationKey, {
   plainLanguage: string;
   severity: "low" | "moderate" | "high" | "severe";
   reasoning: string;
+  pronunciation: string;
 }> = {
-  "cardio-itis": {
-    plainLanguage: "Inflammation of the heart (Myocarditis)",
+  // Pulmo combinations
+  "pulmo-itis": {
+    plainLanguage: "Inflammation of the lungs (Pneumonitis)",
+    severity: "high",
+    reasoning: "Lung inflammation can cause difficulty breathing and may lead to severe respiratory issues or pneumonia if left untreated.",
+    pronunciation: "pool-moh-eye-tis",
+  },
+  "pulmo-ectomy": {
+    plainLanguage: "Surgical removal of the lung (Pulmectomy)",
     severity: "severe",
-    reasoning: "Heart inflammation can severely impact cardiac function and may be life-threatening if left untreated. Immediate medical attention is required.",
+    reasoning: "Removal of a lung is a major surgery typically performed in cases of lung cancer or severe infection, with high risks and long recovery time.",
+    pronunciation: "pool-moh-ek-toh-mee",
   },
-  "dermat-itis": {
-    plainLanguage: "Inflammation of the skin (Dermatitis)",
-    severity: "moderate",
-    reasoning: "While skin inflammation can be uncomfortable and affect quality of life, it's usually manageable with proper treatment and rarely life-threatening.",
-  },
-  "nephro-itis": {
-    plainLanguage: "Inflammation of the kidneys (Nephritis)",
-    severity: "high",
-    reasoning: "Kidney inflammation can disrupt vital filtration functions and lead to serious complications if not properly treated.",
-  },
-  "ophthalmo-itis": {
-    plainLanguage: "Inflammation of the eye (Ophthalmitis)",
-    severity: "high",
-    reasoning: "Eye inflammation requires immediate attention as it can potentially lead to vision loss if not treated promptly.",
-  },
-  "cardio-ectomy": {
-    plainLanguage: "Surgical removal of the heart (Cardiectomy)",
-    severity: "severe",
-    reasoning: "Heart removal is extremely rare and typically only occurs during transplantation. It carries significant risks and requires extensive medical intervention.",
-  },
-  "nephro-ectomy": {
-    plainLanguage: "Surgical removal of a kidney (Nephrectomy)",
-    severity: "high",
-    reasoning: "While humans can function with one kidney, the surgery itself carries significant risks and requires careful post-operative monitoring.",
-  },
-  "hemato-oma": {
-    plainLanguage: "Blood-related tumor (Hematoma)",
-    severity: "moderate",
-    reasoning: "Blood-filled swellings can vary in severity but often resolve with proper medical attention and time.",
-  },
-  "neuro-oma": {
-    plainLanguage: "Nerve tissue tumor (Neuroma)",
-    severity: "high",
-    reasoning: "Tumors affecting nerve tissue can cause significant pain and neurological symptoms, requiring careful medical management.",
-  },
-  "gastro-scopy": {
-    plainLanguage: "Visual examination of the stomach (Gastroscopy)",
+  "pulmo-ology": {
+    plainLanguage: "Study of the lungs (Pulmonology)",
     severity: "low",
-    reasoning: "A routine diagnostic procedure that, while invasive, is generally safe when performed by qualified professionals.",
+    reasoning: "Pulmonology is a medical specialty focused on the study and treatment of lung diseases, typically not an emergency condition.",
+    pronunciation: "pool-moh-ol-oh-jee",
   },
-  "arthro-plasty": {
-    plainLanguage: "Surgical repair of a joint (Arthroplasty)",
+  "pulmo-algia": {
+    plainLanguage: "Lung pain (Pulmalgia)",
+    severity: "high",
+    reasoning: "Pain in the lungs can indicate serious conditions such as infections or pleuritis and requires immediate attention.",
+    pronunciation: "pool-moh-al-jee-ah",
+  },
+
+  // Endo combinations
+  "endo-itis": {
+    plainLanguage: "Inflammation of an internal organ (Endometritis)",
+    severity: "high",
+    reasoning: "Endometrial inflammation can cause severe complications such as infertility or infection if not treated.",
+    pronunciation: "en-doh-eye-tis",
+  },
+  "endo-ectomy": {
+    plainLanguage: "Surgical removal of an internal organ (Endectomy)",
+    severity: "high",
+    reasoning: "Removal of an internal organ, such as the uterus, is a major surgery with significant risks and a long recovery time.",
+    pronunciation: "en-doh-ek-toh-mee",
+  },
+  "endo-ology": {
+    plainLanguage: "Study of internal organs (Endology)",
+    severity: "low",
+    reasoning: "Endology is the study of internal organs, not typically associated with urgent medical issues unless there is a related disorder.",
+    pronunciation: "en-doh-ol-oh-jee",
+  },
+  "endo-genesis": {
+    plainLanguage: "Origin or creation of internal conditions (Endogenesis)",
     severity: "moderate",
-    reasoning: "Joint replacement surgery is a common but major procedure requiring significant rehabilitation time.",
-  }
+    reasoning: "The creation or origin of internal conditions, such as tumor growth or infection, may be serious but often requires diagnostic tests for evaluation.",
+    pronunciation: "en-doh-jen-eh-sis",
+  },
+
+  // Myo combinations
+  "myo-itis": {
+    plainLanguage: "Inflammation of the muscle (Myositis)",
+    severity: "moderate",
+    reasoning: "Muscle inflammation can lead to pain and weakness but is generally treatable with anti-inflammatory medications.",
+    pronunciation: "my-oh-eye-tis",
+  },
+  "myo-plasty": {
+    plainLanguage: "Surgical repair of muscle (Myoplasty)",
+    severity: "moderate",
+    reasoning: "Muscle repair surgery is required after injury or damage and involves moderate recovery, depending on the muscle's function.",
+    pronunciation: "my-oh-plas-tee",
+  },
+  "myo-sclerosis": {
+    plainLanguage: "Hardening of the muscle (Myosclerosis)",
+    severity: "high",
+    reasoning: "Muscle hardening can indicate a chronic condition, such as muscular dystrophy, requiring long-term care and monitoring.",
+    pronunciation: "my-oh-sklehr-oh-sis",
+  },
+  "myo-tomy": {
+    plainLanguage: "Surgical incision of the muscle (Myotomy)",
+    severity: "high",
+    reasoning: "A myotomy involves cutting the muscle, typically for conditions like esophageal disorders, and requires careful post-surgical care.",
+    pronunciation: "my-oh-toh-mee",
+  },
+
+  // Lipo combinations
+  "lipo-itis": {
+    plainLanguage: "Inflammation of fat tissue (Lipitis)",
+    severity: "moderate",
+    reasoning: "Fat tissue inflammation, such as in lipomas or cellulitis, can lead to discomfort and swelling but is typically treatable.",
+    pronunciation: "lye-poh-eye-tis",
+  },
+  "lipo-ectomy": {
+    plainLanguage: "Surgical removal of fat (Lipoectomy)",
+    severity: "moderate",
+    reasoning: "Fat removal surgery, commonly performed for cosmetic or medical reasons, carries moderate risks and requires careful post-operative care.",
+    pronunciation: "lye-poh-ek-toh-mee",
+  },
+  "lipo-ology": {
+    plainLanguage: "Study of fat (Lipidology)",
+    severity: "low",
+    reasoning: "Lipidology involves the study of fats and lipid metabolism, typically not associated with urgent medical issues.",
+    pronunciation: "lye-poh-ol-oh-jee",
+  },
+  "lipo-sclerosis": {
+    plainLanguage: "Hardening of fat tissue (Liposclerosis)",
+    severity: "high",
+    reasoning: "Liposclerosis refers to hardening or scarring of fat tissue, which may indicate chronic conditions such as lipodystrophy.",
+    pronunciation: "lye-poh-sklehr-oh-sis",
+  },
 };
 
-const generatePlainLanguage = (prefix: string, suffix: string): string => {
-  const prefixObj = prefixes.find(p => p.value === prefix);
-  const suffixObj = suffixes.find(s => s.value === suffix);
-  
-  if (!prefixObj || !suffixObj) return "Invalid combination";
-  
-  switch (suffix) {
-    case "itis":
-      return `Inflammation of the ${prefixObj.meaning}`;
-    case "ectomy":
-      return `Surgical removal of the ${prefixObj.meaning}`;
-    case "ology":
-      return `Study of the ${prefixObj.meaning}`;
-    case "algia":
-      return `Pain in the ${prefixObj.meaning}`;
-    case "oma":
-      return `Tumor of the ${prefixObj.meaning}`;
-    case "plasty":
-      return `Surgical repair of the ${prefixObj.meaning}`;
-    case "scopy":
-      return `Visual examination of the ${prefixObj.meaning}`;
-    case "pathy":
-      return `Disease of the ${prefixObj.meaning}`;
-    case "megaly":
-      return `Enlargement of the ${prefixObj.meaning}`;
-    case "stenosis":
-      return `Narrowing of the ${prefixObj.meaning}`;
-    case "osis":
-      return `Abnormal condition of the ${prefixObj.meaning}`;
-    case "gram":
-      return `Visual record of the ${prefixObj.meaning}`;
-    case "rrhea":
-      return `Abnormal discharge from the ${prefixObj.meaning}`;
-    case "phobia":
-      return `Fear of conditions related to the ${prefixObj.meaning}`;
-    case "lysis":
-      return `Breakdown or destruction of the ${prefixObj.meaning}`;
-    default:
-      return "Unknown combination";
-  }
-};
-
-const determineSeverity = (prefix: string, suffix: string): "low" | "moderate" | "high" | "severe" => {
-  if (prefix === "myelo" && suffix === "lysis") {
-    return "severe";
-  }
-  
-  const criticalOrgans = ["cardio", "neuro", "hepato", "nephro", "pneumo"];
-  const majorProcedures = ["ectomy", "plasty"];
-  const seriousConditions = ["oma", "itis", "stenosis"];
-  
-  if (criticalOrgans.includes(prefix) && (majorProcedures.includes(suffix) || seriousConditions.includes(suffix))) {
-    return "severe";
-  } else if (criticalOrgans.includes(prefix) || (majorProcedures.includes(suffix) || suffix === "oma")) {
-    return "high";
-  } else if (seriousConditions.includes(suffix)) {
-    return "moderate";
-  }
-  return "low";
-};
-
-const generateReasoning = (prefix: string, suffix: string, severity: "low" | "moderate" | "high" | "severe"): string => {
-  const prefixObj = prefixes.find(p => p.value === prefix);
-  const suffixObj = suffixes.find(s => s.value === suffix);
-  
-  if (!prefixObj || !suffixObj) return "Unable to determine reasoning for invalid combination";
-  
-  const organ = prefixObj.meaning;
-  const condition = suffixObj.meaning;
-  
-  const severityDescriptions = {
-    severe: [
-      `This condition involves critical intervention with the ${organ}, which is essential for survival.`,
-      `Any medical procedures involving the ${organ} carry significant risks and require immediate attention.`,
-      `The combination of ${condition} affecting the ${organ} presents serious health risks.`
-    ],
-    high: [
-      `The ${organ} plays a vital role in body function, and this ${condition} requires careful medical supervision.`,
-      `Conditions affecting the ${organ} often have a significant impact on overall health and well-being.`,
-      `Issues related to the ${organ} and involving ${condition} need prompt evaluation.`
-    ],
-    moderate: [
-      `While this condition affects the ${organ}, it is usually manageable with proper care.`,
-      `Medical conditions involving the ${organ} and ${condition} are common and often resolve with treatment.`,
-      `The ${organ} is affected in this case, but intervention typically yields positive outcomes.`
-    ],
-    low: [
-      `This condition is usually mild and often part of routine care involving the ${organ}.`,
-      `Issues related to ${condition} in the ${organ} are typically benign and well-tolerated.`,
-      `Medical attention might be needed, but the prognosis for conditions involving the ${organ} is usually good.`
-    ]
-  };
-  
-  const selectedDescriptions = severityDescriptions[severity];
-  return selectedDescriptions[Math.floor(Math.random() * selectedDescriptions.length)];
-};
