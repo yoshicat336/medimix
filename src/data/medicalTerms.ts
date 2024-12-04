@@ -8,7 +8,12 @@ export const prefixes = [
   { value: "hepato", label: "Hepato-", meaning: "liver" },
   { value: "nephro", label: "Nephro-", meaning: "kidney" },
   { value: "pneumo", label: "Pneumo-", meaning: "lung" },
-  { value: "rhino", label: "Rhino-", meaning: "nose" }
+  { value: "rhino", label: "Rhino-", meaning: "nose" },
+  { value: "ophthalmo", label: "Ophthalmo-", meaning: "eye" },
+  { value: "oto", label: "Oto-", meaning: "ear" },
+  { value: "hemato", label: "Hemato-", meaning: "blood" },
+  { value: "myelo", label: "Myelo-", meaning: "bone marrow/spinal cord" },
+  { value: "adeno", label: "Adeno-", meaning: "gland" }
 ];
 
 export const suffixes = [
@@ -21,7 +26,12 @@ export const suffixes = [
   { value: "scopy", label: "-scopy", meaning: "visual examination" },
   { value: "pathy", label: "-pathy", meaning: "disease" },
   { value: "megaly", label: "-megaly", meaning: "enlargement" },
-  { value: "stenosis", label: "-stenosis", meaning: "narrowing" }
+  { value: "stenosis", label: "-stenosis", meaning: "narrowing" },
+  { value: "osis", label: "-osis", meaning: "abnormal condition" },
+  { value: "gram", label: "-gram", meaning: "visual record" },
+  { value: "rrhea", label: "-rrhea", meaning: "flow/discharge" },
+  { value: "phobia", label: "-phobia", meaning: "fear" },
+  { value: "lysis", label: "-lysis", meaning: "breakdown/destruction" }
 ];
 
 type CombinationKey = `${string}-${string}`;
@@ -31,45 +41,55 @@ export const combinationExplanations: Record<CombinationKey, {
   severity: "low" | "moderate" | "high" | "severe";
   reasoning: string;
 }> = {
-  "osteo-itis": {
-    plainLanguage: "Inflammation of the bones",
-    severity: "high",
-    reasoning: "Bone inflammation can lead to severe pain, mobility issues, and potential bone damage if left untreated.",
-  },
   "cardio-itis": {
-    plainLanguage: "Inflammation of the heart",
+    plainLanguage: "Inflammation of the heart (Myocarditis)",
     severity: "severe",
-    reasoning: "Heart inflammation can be life-threatening as it affects the heart's ability to pump blood effectively.",
+    reasoning: "Heart inflammation can severely impact cardiac function and may be life-threatening if left untreated. Immediate medical attention is required.",
   },
   "dermat-itis": {
-    plainLanguage: "Inflammation of the skin",
+    plainLanguage: "Inflammation of the skin (Dermatitis)",
     severity: "moderate",
-    reasoning: "While uncomfortable and potentially chronic, skin inflammation is usually manageable with proper treatment.",
-  },
-  "hepato-itis": {
-    plainLanguage: "Inflammation of the liver",
-    severity: "high",
-    reasoning: "Liver inflammation can severely impact vital metabolic functions and may lead to organ damage.",
+    reasoning: "While skin inflammation can be uncomfortable and affect quality of life, it's usually manageable with proper treatment and rarely life-threatening.",
   },
   "nephro-itis": {
-    plainLanguage: "Inflammation of the kidneys",
+    plainLanguage: "Inflammation of the kidneys (Nephritis)",
     severity: "high",
-    reasoning: "Kidney inflammation can disrupt fluid balance and waste removal, potentially leading to kidney failure.",
+    reasoning: "Kidney inflammation can disrupt vital filtration functions and lead to serious complications if not properly treated.",
+  },
+  "ophthalmo-itis": {
+    plainLanguage: "Inflammation of the eye (Ophthalmitis)",
+    severity: "high",
+    reasoning: "Eye inflammation requires immediate attention as it can potentially lead to vision loss if not treated promptly.",
   },
   "cardio-ectomy": {
     plainLanguage: "Surgical removal of heart tissue",
     severity: "severe",
-    reasoning: "Any surgical procedure involving the heart carries significant risks and requires careful consideration.",
+    reasoning: "Any surgical procedure involving the heart carries significant risks and requires extensive planning and expertise.",
   },
-  "arthro-plasty": {
-    plainLanguage: "Surgical repair of a joint",
+  "nephro-ectomy": {
+    plainLanguage: "Surgical removal of a kidney (Nephrectomy)",
+    severity: "high",
+    reasoning: "While humans can function with one kidney, the surgery itself carries significant risks and requires careful post-operative monitoring.",
+  },
+  "hemato-oma": {
+    plainLanguage: "Blood-related tumor (Hematoma)",
     severity: "moderate",
-    reasoning: "While major surgery, joint repair procedures are common and have well-established recovery protocols.",
+    reasoning: "Blood-filled swellings can vary in severity but often resolve with proper medical attention and time.",
+  },
+  "neuro-oma": {
+    plainLanguage: "Nerve tissue tumor (Neuroma)",
+    severity: "high",
+    reasoning: "Tumors affecting nerve tissue can cause significant pain and neurological symptoms, requiring careful medical management.",
   },
   "gastro-scopy": {
-    plainLanguage: "Visual examination of the stomach",
+    plainLanguage: "Visual examination of the stomach (Gastroscopy)",
     severity: "low",
-    reasoning: "A routine diagnostic procedure with minimal risks when performed by qualified professionals.",
+    reasoning: "A routine diagnostic procedure that, while invasive, is generally safe when performed by qualified professionals.",
+  },
+  "arthro-plasty": {
+    plainLanguage: "Surgical repair of a joint (Arthroplasty)",
+    severity: "moderate",
+    reasoning: "Joint replacement surgery is a common but major procedure requiring significant rehabilitation time.",
   }
 };
 
@@ -100,22 +120,31 @@ const generatePlainLanguage = (prefix: string, suffix: string): string => {
       return `Enlargement of the ${prefixObj.meaning}`;
     case "stenosis":
       return `Narrowing of the ${prefixObj.meaning}`;
+    case "osis":
+      return `Abnormal condition of the ${prefixObj.meaning}`;
+    case "gram":
+      return `Visual record of the ${prefixObj.meaning}`;
+    case "rrhea":
+      return `Abnormal discharge from the ${prefixObj.meaning}`;
+    case "phobia":
+      return `Fear of conditions related to the ${prefixObj.meaning}`;
+    case "lysis":
+      return `Breakdown or destruction of the ${prefixObj.meaning}`;
     default:
       return "Unknown combination";
   }
 };
 
 const determineSeverity = (prefix: string, suffix: string): "low" | "moderate" | "high" | "severe" => {
-  // High-risk organs/systems
-  const highRiskPrefixes = ["cardio", "neuro", "hepato", "nephro"];
-  // High-risk procedures/conditions
-  const highRiskSuffixes = ["ectomy", "oma"];
+  const criticalOrgans = ["cardio", "neuro", "hepato", "nephro", "pneumo"];
+  const majorProcedures = ["ectomy", "plasty"];
+  const seriousConditions = ["oma", "itis", "stenosis"];
   
-  if (highRiskPrefixes.includes(prefix) && highRiskSuffixes.includes(suffix)) {
+  if (criticalOrgans.includes(prefix) && (majorProcedures.includes(suffix) || seriousConditions.includes(suffix))) {
     return "severe";
-  } else if (highRiskPrefixes.includes(prefix) || highRiskSuffixes.includes(suffix)) {
+  } else if (criticalOrgans.includes(prefix) || (majorProcedures.includes(suffix) || suffix === "oma")) {
     return "high";
-  } else if (suffix === "itis" || suffix === "pathy") {
+  } else if (seriousConditions.includes(suffix)) {
     return "moderate";
   }
   return "low";
@@ -130,16 +159,31 @@ const generateReasoning = (prefix: string, suffix: string, severity: "low" | "mo
   const organ = prefixObj.meaning;
   const condition = suffixObj.meaning;
   
-  switch (severity) {
-    case "severe":
-      return `This condition involves critical intervention with the ${organ}, which is essential for survival. The ${condition} presents significant risks and requires immediate medical attention.`;
-    case "high":
-      return `The ${organ} is a vital component of body function. Any ${condition} requires careful medical supervision and treatment.`;
-    case "moderate":
-      return `While the ${condition} of the ${organ} requires medical attention, it is generally manageable with appropriate treatment.`;
-    case "low":
-      return `This is typically a routine medical procedure or condition involving the ${organ}. While medical attention is needed, risks are minimal when properly managed.`;
-  }
+  const severityDescriptions = {
+    severe: [
+      `This condition involves critical intervention with the ${organ}, which is essential for survival.`,
+      `Any medical procedures involving the ${organ} carry significant risks and require immediate attention.`,
+      `The combination of ${condition} affecting the ${organ} presents serious health risks.`
+    ],
+    high: [
+      `The ${organ} plays a vital role in body function, and this ${condition} requires careful medical supervision.`,
+      `Conditions affecting the ${organ} need prompt medical attention to prevent complications.`,
+      `This medical situation involving the ${organ} requires specialized care and monitoring.`
+    ],
+    moderate: [
+      `While affecting the ${organ}, this condition is generally manageable with appropriate medical care.`,
+      `Regular monitoring and treatment of the ${organ} condition is necessary but not usually urgent.`,
+      `This ${condition} of the ${organ} typically responds well to standard treatments.`
+    ],
+    low: [
+      `This is a routine medical procedure or condition involving the ${organ}.`,
+      `When properly managed, this ${condition} of the ${organ} presents minimal risks.`,
+      `Standard medical protocols for the ${organ} are usually sufficient for this condition.`
+    ]
+  };
+
+  const randomIndex = Math.floor(Math.random() * 3);
+  return severityDescriptions[severity][randomIndex];
 };
 
 export const getExplanation = (prefix: string, suffix: string) => {
@@ -150,7 +194,6 @@ export const getExplanation = (prefix: string, suffix: string) => {
     return existingExplanation;
   }
   
-  // Generate explanation for non-existing combinations
   const plainLanguage = generatePlainLanguage(prefix, suffix);
   const severity = determineSeverity(prefix, suffix);
   const reasoning = generateReasoning(prefix, suffix, severity);
