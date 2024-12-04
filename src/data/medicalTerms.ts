@@ -3,7 +3,7 @@ export const prefixes = [
   { value: "cardio", label: "Cardio-", meaning: "heart" },
   { value: "dermat", label: "Dermat-", meaning: "skin" },
   { value: "gastro", label: "Gastro-", meaning: "stomach" },
-  { value: "neuro", label: "Neuro-", meaning: "nerve/nervous system" },
+  { value: "neuro", label: "Neuro-", meaning: "nerve or nervous system" },
   { value: "arthro", label: "Arthro-", meaning: "joint" },
   { value: "hepato", label: "Hepato-", meaning: "liver" },
   { value: "nephro", label: "Nephro-", meaning: "kidney" },
@@ -12,7 +12,7 @@ export const prefixes = [
   { value: "ophthalmo", label: "Ophthalmo-", meaning: "eye" },
   { value: "oto", label: "Oto-", meaning: "ear" },
   { value: "hemato", label: "Hemato-", meaning: "blood" },
-  { value: "myelo", label: "Myelo-", meaning: "bone marrow/spinal cord" },
+  { value: "myelo", label: "Myelo-", meaning: "bone marrow or spinal cord" },
   { value: "adeno", label: "Adeno-", meaning: "gland" }
 ];
 
@@ -29,9 +29,9 @@ export const suffixes = [
   { value: "stenosis", label: "-stenosis", meaning: "narrowing" },
   { value: "osis", label: "-osis", meaning: "abnormal condition" },
   { value: "gram", label: "-gram", meaning: "visual record" },
-  { value: "rrhea", label: "-rrhea", meaning: "flow/discharge" },
+  { value: "rrhea", label: "-rrhea", meaning: "flow or discharge" },
   { value: "phobia", label: "-phobia", meaning: "fear" },
-  { value: "lysis", label: "-lysis", meaning: "breakdown/destruction" }
+  { value: "lysis", label: "-lysis", meaning: "breakdown or destruction" }
 ];
 
 type CombinationKey = `${string}-${string}`;
@@ -62,9 +62,9 @@ export const combinationExplanations: Record<CombinationKey, {
     reasoning: "Eye inflammation requires immediate attention as it can potentially lead to vision loss if not treated promptly.",
   },
   "cardio-ectomy": {
-    plainLanguage: "Surgical removal of heart tissue",
+    plainLanguage: "Surgical removal of the heart (Cardiectomy)",
     severity: "severe",
-    reasoning: "Any surgical procedure involving the heart carries significant risks and requires extensive planning and expertise.",
+    reasoning: "Heart removal is extremely rare and typically only occurs during transplantation. It carries significant risks and requires extensive medical intervention.",
   },
   "nephro-ectomy": {
     plainLanguage: "Surgical removal of a kidney (Nephrectomy)",
@@ -136,7 +136,6 @@ const generatePlainLanguage = (prefix: string, suffix: string): string => {
 };
 
 const determineSeverity = (prefix: string, suffix: string): "low" | "moderate" | "high" | "severe" => {
-  // Special case for Myelolysis
   if (prefix === "myelo" && suffix === "lysis") {
     return "severe";
   }
@@ -172,40 +171,21 @@ const generateReasoning = (prefix: string, suffix: string, severity: "low" | "mo
     ],
     high: [
       `The ${organ} plays a vital role in body function, and this ${condition} requires careful medical supervision.`,
-      `Conditions affecting the ${organ} need prompt medical attention to prevent complications.`,
-      `This medical situation involving the ${organ} requires specialized care and monitoring.`
+      `Conditions affecting the ${organ} often have a significant impact on overall health and well-being.`,
+      `Issues related to the ${organ} and involving ${condition} need prompt evaluation.`
     ],
     moderate: [
-      `While affecting the ${organ}, this condition is generally manageable with appropriate medical care.`,
-      `Regular monitoring and treatment of the ${organ} condition is necessary but not usually urgent.`,
-      `This ${condition} of the ${organ} typically responds well to standard treatments.`
+      `While this condition affects the ${organ}, it is usually manageable with proper care.`,
+      `Medical conditions involving the ${organ} and ${condition} are common and often resolve with treatment.`,
+      `The ${organ} is affected in this case, but intervention typically yields positive outcomes.`
     ],
     low: [
-      `This is a routine medical procedure or condition involving the ${organ}.`,
-      `When properly managed, this ${condition} of the ${organ} presents minimal risks.`,
-      `Standard medical protocols for the ${organ} are usually sufficient for this condition.`
+      `This condition is usually mild and often part of routine care involving the ${organ}.`,
+      `Issues related to ${condition} in the ${organ} are typically benign and well-tolerated.`,
+      `Medical attention might be needed, but the prognosis for conditions involving the ${organ} is usually good.`
     ]
   };
-
-  const randomIndex = Math.floor(Math.random() * 3);
-  return severityDescriptions[severity][randomIndex];
-};
-
-export const getExplanation = (prefix: string, suffix: string) => {
-  const key = `${prefix}-${suffix}` as CombinationKey;
-  const existingExplanation = combinationExplanations[key];
   
-  if (existingExplanation) {
-    return existingExplanation;
-  }
-  
-  const plainLanguage = generatePlainLanguage(prefix, suffix);
-  const severity = determineSeverity(prefix, suffix);
-  const reasoning = generateReasoning(prefix, suffix, severity);
-  
-  return {
-    plainLanguage,
-    severity,
-    reasoning
-  };
+  const selectedDescriptions = severityDescriptions[severity];
+  return selectedDescriptions[Math.floor(Math.random() * selectedDescriptions.length)];
 };
