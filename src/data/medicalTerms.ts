@@ -136,6 +136,11 @@ const generatePlainLanguage = (prefix: string, suffix: string): string => {
 };
 
 const determineSeverity = (prefix: string, suffix: string): "low" | "moderate" | "high" | "severe" => {
+  // Special case for Myelolysis
+  if (prefix === "myelo" && suffix === "lysis") {
+    return "severe";
+  }
+  
   const criticalOrgans = ["cardio", "neuro", "hepato", "nephro", "pneumo"];
   const majorProcedures = ["ectomy", "plasty"];
   const seriousConditions = ["oma", "itis", "stenosis"];
