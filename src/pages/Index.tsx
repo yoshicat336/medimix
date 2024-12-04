@@ -26,7 +26,7 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-b from-medical-light to-white p-6">
       <div className="max-w-4xl mx-auto space-y-6">
         <h1 className="text-4xl font-bold text-center text-medical-dark mb-8">
-          Medical Terminology Explorer
+          MediMix
         </h1>
 
         <div className="grid grid-cols-2 gap-4 mb-6">
