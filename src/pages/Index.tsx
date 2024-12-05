@@ -57,28 +57,38 @@ const Index = () => {
           </Select>
         </div>
 
-        {selectedPrefix && selectedSuffix && explanation && (
+        {selectedPrefix && selectedSuffix && (
           <div className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-2xl text-medical">
-                  {selectedPrefix.charAt(0).toUpperCase() + selectedPrefix.slice(1)}
-                  {selectedSuffix}
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <p className="text-lg">{explanation.plainLanguage}</p>
-                <div className="flex items-center space-x-2">
-                  <span className="font-medium">Severity:</span>
-                  <SeverityBadge severity={explanation.severity || "moderate"} />
-                </div>
-                <div className="mt-4">
-                  <p className="font-medium text-gray-700">Pronunciation:</p>
-                  <p className="text-lg italic text-gray-600">{explanation.pronunciation}</p>
-                </div>
-                <p className="mt-4 text-gray-600">{explanation.reasoning}</p>
-              </CardContent>
-            </Card>
+            {explanation ? (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-2xl text-medical">
+                    {selectedPrefix.charAt(0).toUpperCase() + selectedPrefix.slice(1)}
+                    {selectedSuffix}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <p className="text-lg">{explanation.plainLanguage}</p>
+                  <div className="flex items-center space-x-2">
+                    <span className="font-medium">Severity:</span>
+                    <SeverityBadge severity={explanation.severity || "moderate"} />
+                  </div>
+                  <div className="mt-4">
+                    <p className="font-medium text-gray-700">Pronunciation:</p>
+                    <p className="text-lg italic text-gray-600">{explanation.pronunciation}</p>
+                  </div>
+                  <p className="mt-4 text-gray-600">{explanation.reasoning}</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card>
+                <CardContent className="py-6">
+                  <p className="text-lg text-gray-600 text-center">
+                    No explanation available for this combination yet.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
           </div>
         )}
       </div>
