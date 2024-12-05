@@ -66,5 +66,11 @@ export const combinationExplanations: Record<CombinationKey, CombinationExplanat
     severity: "severe",
     reasoning: "Inflammation of the heart can severely impact cardiac function and be life-threatening.",
     pronunciation: "car-dee-oh-eye-tis",
+  },
+  "yoshi-itis": {
+    plainLanguage: "Inflammation of the Yoshi (yoshiitis)",
+    severity: "low",
+    reasoning: "You have scared yoshi. he is now a poofy ball of poof.",
+    pronunciation: "yo-shee-eye-tis",
   }
 };
