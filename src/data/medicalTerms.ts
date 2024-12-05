@@ -1,3 +1,6 @@
+import { CombinationKey, CombinationExplanation } from './types';
+import { combinationExplanations } from './combinations';
+
 export * from './types';
 export * from './prefixes';
 export * from './suffixes';
