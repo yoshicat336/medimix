@@ -9,13 +9,37 @@ interface PrefixSuffix {
 
 export const prefixes: PrefixSuffix[] = [
   { value: "pulmo", label: "Pulmo-", meaning: "Relating to lungs" },
-  { value: "endo", label: "Endo-", meaning: "Inside" },
+  { value: "neuro", label: "Neuro-", meaning: "Relating to nerves" },
+  { value: "cardio", label: "Cardio-", meaning: "Relating to heart" },
+  { value: "hepato", label: "Hepato-", meaning: "Relating to liver" },
+  { value: "dermo", label: "Dermo-", meaning: "Relating to skin" },
+  { value: "osteo", label: "Osteo-", meaning: "Relating to bone" },
+  { value: "cranio", label: "Cranio-", meaning: "Relating to skull" },
+  { value: "gastro", label: "Gastro-", meaning: "Relating to stomach" },
+  { value: "necro", label: "Necro-", meaning: "Death/dying" },
+  { value: "cyto", label: "Cyto-", meaning: "Cell" },
   { value: "myo", label: "Myo-", meaning: "Muscle" },
   { value: "lipo", label: "Lipo-", meaning: "Fat" },
+  { value: "endo", label: "Endo-", meaning: "Inside" },
+  { value: "hemo", label: "Hemo-", meaning: "Blood" },
+  { value: "arthro", label: "Arthro-", meaning: "Joint" },
+  { value: "psych", label: "Psych-", meaning: "Mind" },
+  { value: "thoraco", label: "Thoraco-", meaning: "Chest" },
+  { value: "pneumo", label: "Pneumo-", meaning: "Air/lung" },
+  { value: "rhino", label: "Rhino-", meaning: "Nose" },
+  { value: "ophtalmo", label: "Ophtalmo-", meaning: "Eye" }
 ];
 
 export const suffixes: PrefixSuffix[] = [
   { value: "itis", label: "-itis", meaning: "Inflammation" },
+  { value: "cyte", label: "-cyte", meaning: "Cell" },
+  { value: "pathy", label: "-pathy", meaning: "Disease" },
+  { value: "graphy", label: "-graphy", meaning: "Process of recording" },
+  { value: "scopy", label: "-scopy", meaning: "Visual examination" },
+  { value: "lysis", label: "-lysis", meaning: "Breaking down" },
+  { value: "phobia", label: "-phobia", meaning: "Fear" },
+  { value: "mania", label: "-mania", meaning: "Excessive excitement" },
+  { value: "plasia", label: "-plasia", meaning: "Formation/growth" },
   { value: "ectomy", label: "-ectomy", meaning: "Surgical removal" },
   { value: "ology", label: "-ology", meaning: "Study of" },
   { value: "algia", label: "-algia", meaning: "Pain" },
@@ -23,6 +47,10 @@ export const suffixes: PrefixSuffix[] = [
   { value: "plasty", label: "-plasty", meaning: "Surgical repair" },
   { value: "sclerosis", label: "-sclerosis", meaning: "Hardening" },
   { value: "tomy", label: "-tomy", meaning: "Cutting into" },
+  { value: "emia", label: "-emia", meaning: "Blood condition" },
+  { value: "oma", label: "-oma", meaning: "Tumor" },
+  { value: "pnea", label: "-pnea", meaning: "Breathing" },
+  { value: "uria", label: "-uria", meaning: "Urine condition" }
 ];
 
 export const combinationExplanations: Record<CombinationKey, {
@@ -134,6 +162,44 @@ export const combinationExplanations: Record<CombinationKey, {
     reasoning: "Liposclerosis refers to hardening or scarring of fat tissue, which may indicate chronic conditions such as lipodystrophy.",
     pronunciation: "lye-poh-sklehr-oh-sis",
   },
+
+  // Adding some new combinations
+  "neuro-pathy": {
+    plainLanguage: "Disease of the nerves (Neuropathy)",
+    severity: "high",
+    reasoning: "Nerve disease can cause serious sensory and motor function issues.",
+    pronunciation: "new-roh-path-ee",
+  },
+  "cardio-graphy": {
+    plainLanguage: "Heart recording (Cardiography)",
+    severity: "low",
+    reasoning: "A diagnostic procedure to record heart activity, not a condition itself.",
+    pronunciation: "car-dee-og-ra-fee",
+  },
+  "hepato-oma": {
+    plainLanguage: "Liver tumor (Hepatoma)",
+    severity: "severe",
+    reasoning: "Liver tumors can be life-threatening and often require immediate medical intervention.",
+    pronunciation: "hep-a-toe-oh-ma",
+  },
+  "dermo-itis": {
+    plainLanguage: "Skin inflammation (Dermatitis)",
+    severity: "moderate",
+    reasoning: "Skin inflammation can cause discomfort and may require medical treatment.",
+    pronunciation: "der-moh-eye-tis",
+  },
+  "osteo-porosis": {
+    plainLanguage: "Bone condition (Osteoporosis)",
+    severity: "high",
+    reasoning: "Weakening of bones can lead to serious fractures and complications.",
+    pronunciation: "os-tee-oh-por-oh-sis",
+  },
+  "cranio-plasty": {
+    plainLanguage: "Skull repair surgery (Cranioplasty)",
+    severity: "severe",
+    reasoning: "Major surgical procedure to repair skull defects, requiring extensive recovery.",
+    pronunciation: "cray-nee-oh-plas-tee",
+  }
 };
 
 export const getExplanation = (prefix: string, suffix: string) => {
