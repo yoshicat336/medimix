@@ -73,4 +73,4 @@ export const combinationExplanations: Record<CombinationKey, CombinationExplanat
     reasoning: "You have scared yoshi. he is now a poofy ball of poof.",
     pronunciation: "yo-shee-eye-tis",
   }
-};
+-};
