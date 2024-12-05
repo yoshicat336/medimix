@@ -57,7 +57,7 @@ const Index = () => {
           </Select>
         </div>
 
-        {selectedPrefix && selectedSuffix && (
+        {selectedPrefix && selectedSuffix && explanation && (
           <div className="space-y-4">
             <Card>
               <CardHeader>
@@ -66,13 +66,17 @@ const Index = () => {
                   {selectedSuffix}
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-lg mb-4">{explanation?.plainLanguage}</p>
+              <CardContent className="space-y-4">
+                <p className="text-lg">{explanation.plainLanguage}</p>
                 <div className="flex items-center space-x-2">
                   <span className="font-medium">Severity:</span>
-                  <SeverityBadge severity={explanation?.severity || "moderate"} />
+                  <SeverityBadge severity={explanation.severity || "moderate"} />
                 </div>
-                <p className="mt-4 text-gray-600">{explanation?.reasoning}</p>
+                <div className="mt-4">
+                  <p className="font-medium text-gray-700">Pronunciation:</p>
+                  <p className="text-lg italic text-gray-600">{explanation.pronunciation}</p>
+                </div>
+                <p className="mt-4 text-gray-600">{explanation.reasoning}</p>
               </CardContent>
             </Card>
           </div>
