@@ -1,6 +1,33 @@
+type SeverityLevel = "low" | "moderate" | "high" | "severe";
+type CombinationKey = `${string}-${string}`;
+
+interface PrefixSuffix {
+  value: string;
+  label: string;
+  meaning: string;
+}
+
+export const prefixes: PrefixSuffix[] = [
+  { value: "pulmo", label: "Pulmo-", meaning: "Relating to lungs" },
+  { value: "endo", label: "Endo-", meaning: "Inside" },
+  { value: "myo", label: "Myo-", meaning: "Muscle" },
+  { value: "lipo", label: "Lipo-", meaning: "Fat" },
+];
+
+export const suffixes: PrefixSuffix[] = [
+  { value: "itis", label: "-itis", meaning: "Inflammation" },
+  { value: "ectomy", label: "-ectomy", meaning: "Surgical removal" },
+  { value: "ology", label: "-ology", meaning: "Study of" },
+  { value: "algia", label: "-algia", meaning: "Pain" },
+  { value: "genesis", label: "-genesis", meaning: "Origin/creation" },
+  { value: "plasty", label: "-plasty", meaning: "Surgical repair" },
+  { value: "sclerosis", label: "-sclerosis", meaning: "Hardening" },
+  { value: "tomy", label: "-tomy", meaning: "Cutting into" },
+];
+
 export const combinationExplanations: Record<CombinationKey, {
   plainLanguage: string;
-  severity: "low" | "moderate" | "high" | "severe";
+  severity: SeverityLevel;
   reasoning: string;
   pronunciation: string;
 }> = {
@@ -109,3 +136,7 @@ export const combinationExplanations: Record<CombinationKey, {
   },
 };
 
+export const getExplanation = (prefix: string, suffix: string) => {
+  const key = `${prefix}-${suffix}` as CombinationKey;
+  return combinationExplanations[key];
+};
