@@ -24,6 +24,6 @@ export const prefixes: PrefixSuffix[] = [
   { value: "thoraco", label: "Thoraco-", meaning: "Chest" },
   { value: "pneumo", label: "Pneumo-", meaning: "Air/lung" },
   { value: "rhino", label: "Rhino-", meaning: "Nose" },
-  { value: "ophtalmo", label: "Ophtalmo-", meaning: "Eye" }
+  { value: "ophtalmo", label: "Ophtalmo-", meaning: "Eye" },
   { value: "yoshi", label: "Yoshi-", meaning: "Yoshi" }
 ];
