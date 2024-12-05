@@ -48,5 +48,23 @@ export const combinationExplanations: Record<CombinationKey, CombinationExplanat
     severity: "severe",
     reasoning: "Major surgical procedure to repair skull defects, requiring extensive recovery.",
     pronunciation: "cray-nee-oh-plas-tee",
+  },
+  "gastro-itis": {
+    plainLanguage: "Stomach inflammation (Gastritis)",
+    severity: "moderate",
+    reasoning: "Inflammation of the stomach lining that can cause pain and digestive issues.",
+    pronunciation: "gas-troh-eye-tis",
+  },
+  "neuro-oma": {
+    plainLanguage: "Nerve tumor (Neuroma)",
+    severity: "high",
+    reasoning: "A tumor growing from nerve tissue that can cause severe pain and neurological symptoms.",
+    pronunciation: "new-roh-oh-ma",
+  },
+  "cardio-itis": {
+    plainLanguage: "Heart inflammation (Carditis)",
+    severity: "severe",
+    reasoning: "Inflammation of the heart can severely impact cardiac function and be life-threatening.",
+    pronunciation: "car-dee-oh-eye-tis",
   }
 };
