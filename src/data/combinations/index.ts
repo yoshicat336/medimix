@@ -4,6 +4,9 @@ import { neuroCombinations } from './neuro';
 import { cardioCombinations } from './cardio';
 import { hepatoCombinations } from './hepato';
 import { dermoCombinations } from './dermo';
+import { osteoCombinations } from './osteo';
+import { cranioCombinations } from './cranio';
+import { gastroCombinations } from './gastro';
 import { funCombinations } from './fun';
 
 export const combinationExplanations: Record<CombinationKey, CombinationExplanation> = {
@@ -12,5 +15,8 @@ export const combinationExplanations: Record<CombinationKey, CombinationExplanat
   ...cardioCombinations,
   ...hepatoCombinations,
   ...dermoCombinations,
+  ...osteoCombinations,
+  ...cranioCombinations,
+  ...gastroCombinations,
   ...funCombinations,
 };
