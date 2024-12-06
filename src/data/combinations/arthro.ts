@@ -25,4 +25,10 @@ export const arthroCombinations: Record<CombinationKey, CombinationExplanation> 
     reasoning: "Severity varies.",
     pronunciation: "ar-throh-pah-thee",
   },
+    "arthro-logy": {
+    plainLanguage: "The branch of anatomy that studies the structure and function of joints. (Arthrology)",
+    severity: "low",
+    reasoning: "N/A.",
+    pronunciation: "ar-throh-ah-loh-gee",
+  },
 };
