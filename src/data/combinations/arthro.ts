@@ -18,5 +18,11 @@ export const arthroCombinations: Record<CombinationKey, CombinationExplanation> 
     severity: "moderate",
     reasoning: "Minimally invasive procedure to examine joint conditions.",
     pronunciation: "ar-throh-skoh-pee",
-  }
+  },
+  "arthro-pathy": {
+    plainLanguage: "A disease that affects the joints, such as arthritis or gout. (Arthropathy)",
+    severity: "moderate",
+    reasoning: "Severity varies.",
+    pronunciation: "ar-throh-pah-thee",
+  },
 };
