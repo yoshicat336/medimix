@@ -7,6 +7,11 @@ import { dermoCombinations } from './dermo';
 import { osteoCombinations } from './osteo';
 import { cranioCombinations } from './cranio';
 import { gastroCombinations } from './gastro';
+import { necroCombinations } from './necro';
+import { cytoCombinations } from './cyto';
+import { myoCombinations } from './myo';
+import { arthroCombinations } from './arthro';
+import { pneumoCombinations } from './pneumo';
 import { funCombinations } from './fun';
 
 export const combinationExplanations: Record<CombinationKey, CombinationExplanation> = {
@@ -18,5 +23,10 @@ export const combinationExplanations: Record<CombinationKey, CombinationExplanat
   ...osteoCombinations,
   ...cranioCombinations,
   ...gastroCombinations,
+  ...necroCombinations,
+  ...cytoCombinations,
+  ...myoCombinations,
+  ...arthroCombinations,
+  ...pneumoCombinations,
   ...funCombinations,
 };
