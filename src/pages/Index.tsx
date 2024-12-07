@@ -25,10 +25,9 @@ const Index = () => {
   const selectTriggerClasses = `
     bg-[#e0e5ec] border-none 
     shadow-[-5px_-5px_10px_rgba(255,255,255,0.8),5px_5px_10px_rgba(0,0,0,0.1)]
-    hover:scale-[1.02] active:scale-95
-    active:shadow-[-2px_-2px_5px_rgba(255,255,255,0.8),2px_2px_5px_rgba(0,0,0,0.1)]
+    hover:opacity-90
     focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0
-    transform-gpu transition-[transform] duration-100
+    transition-opacity duration-150
   `.trim();
 
   return (
