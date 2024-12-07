@@ -8,16 +8,16 @@ interface SeverityBadgeProps {
 
 const SeverityBadge = ({ severity }: SeverityBadgeProps) => {
   const colors: Record<SeverityLevel, string> = {
-    low: "bg-green-100 text-green-800 border-green-200",
-    moderate: "bg-yellow-100 text-yellow-800 border-yellow-200",
-    high: "bg-orange-100 text-orange-800 border-orange-200",
-    severe: "bg-red-100 text-red-800 border-red-200",
+    low: "bg-green-100/50 text-green-800 shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.1)]",
+    moderate: "bg-yellow-100/50 text-yellow-800 shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.1)]",
+    high: "bg-orange-100/50 text-orange-800 shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.1)]",
+    severe: "bg-red-100/50 text-red-800 shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.1)]",
   };
 
   return (
     <span
       className={cn(
-        "px-3 py-1 rounded-full text-sm font-medium border",
+        "px-3 py-1 rounded-full text-sm font-medium",
         colors[severity]
       )}
     >

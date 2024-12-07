@@ -23,44 +23,48 @@ const Index = () => {
     : null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-medical-light to-white p-6">
+    <div className="min-h-screen bg-[#e0e5ec] p-6">
       <div className="max-w-4xl mx-auto space-y-6">
-        <h1 className="text-4xl font-bold text-center text-medical-dark mb-8">
+        <h1 className="text-4xl font-bold text-center text-medical-dark mb-8 drop-shadow-[2px_2px_2px_rgba(255,255,255,0.7)]">
           MediMix
         </h1>
 
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <Select onValueChange={setSelectedPrefix}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select prefix" />
-            </SelectTrigger>
-            <SelectContent>
-              {prefixes.map((prefix) => (
-                <SelectItem key={prefix.value} value={prefix.value}>
-                  {prefix.label} ({prefix.meaning})
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+          <div className="shadow-[inset_-5px_-5px_10px_rgba(255,255,255,0.8),inset_5px_5px_10px_rgba(0,0,0,0.1)] rounded-xl p-2">
+            <Select onValueChange={setSelectedPrefix}>
+              <SelectTrigger className="bg-[#e0e5ec] border-none shadow-[-5px_-5px_10px_rgba(255,255,255,0.8),5px_5px_10px_rgba(0,0,0,0.1)]">
+                <SelectValue placeholder="Select prefix" />
+              </SelectTrigger>
+              <SelectContent>
+                {prefixes.map((prefix) => (
+                  <SelectItem key={prefix.value} value={prefix.value}>
+                    {prefix.label} ({prefix.meaning})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
 
-          <Select onValueChange={setSelectedSuffix}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select suffix" />
-            </SelectTrigger>
-            <SelectContent>
-              {suffixes.map((suffix) => (
-                <SelectItem key={suffix.value} value={suffix.value}>
-                  {suffix.label} ({suffix.meaning})
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="shadow-[inset_-5px_-5px_10px_rgba(255,255,255,0.8),inset_5px_5px_10px_rgba(0,0,0,0.1)] rounded-xl p-2">
+            <Select onValueChange={setSelectedSuffix}>
+              <SelectTrigger className="bg-[#e0e5ec] border-none shadow-[-5px_-5px_10px_rgba(255,255,255,0.8),5px_5px_10px_rgba(0,0,0,0.1)]">
+                <SelectValue placeholder="Select suffix" />
+              </SelectTrigger>
+              <SelectContent>
+                {suffixes.map((suffix) => (
+                  <SelectItem key={suffix.value} value={suffix.value}>
+                    {suffix.label} ({suffix.meaning})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         {selectedPrefix && selectedSuffix && (
           <div className="space-y-4">
             {explanation ? (
-              <Card>
+              <Card className="bg-[#e0e5ec] border-none shadow-[-10px_-10px_20px_rgba(255,255,255,0.8),10px_10px_20px_rgba(0,0,0,0.1)]">
                 <CardHeader>
                   <CardTitle className="text-2xl text-medical">
                     {selectedPrefix.charAt(0).toUpperCase() + selectedPrefix.slice(1)}
@@ -81,7 +85,7 @@ const Index = () => {
                 </CardContent>
               </Card>
             ) : (
-              <Card>
+              <Card className="bg-[#e0e5ec] border-none shadow-[-10px_-10px_20px_rgba(255,255,255,0.8),10px_10px_20px_rgba(0,0,0,0.1)]">
                 <CardContent className="py-6">
                   <p className="text-lg text-gray-600 text-center">
                     No explanation available for this combination yet.
