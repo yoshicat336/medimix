@@ -17,7 +17,6 @@ import {
 const Index = () => {
   const [selectedPrefix, setSelectedPrefix] = useState("");
   const [selectedSuffix, setSelectedSuffix] = useState("");
-  const [isSelectActive, setIsSelectActive] = useState(false);
 
   const explanation = selectedPrefix && selectedSuffix
     ? getExplanation(selectedPrefix, selectedSuffix)
@@ -26,21 +25,14 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-[#e0e5ec] p-6">
       <div className="max-w-4xl mx-auto space-y-6">
-        <h1 className="text-4xl font-bold text-center text-medical-dark mb-8 drop-shadow-[2px_2px_2px_rgba(255,255,255,0.7)] hover:scale-105 transition-transform duration-300 animate-fade-in">
+        <h1 className="text-4xl font-bold text-center text-medical-dark mb-8 drop-shadow-[2px_2px_2px_rgba(255,255,255,0.7)]">
           MediMix
         </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          <div 
-            className={`shadow-[inset_-5px_-5px_10px_rgba(255,255,255,0.8),inset_5px_5px_10px_rgba(0,0,0,0.1)] rounded-xl p-2 transition-all duration-300 ease-in-out ${
-              isSelectActive ? 'scale-105 shadow-[inset_-8px_-8px_15px_rgba(255,255,255,0.9),inset_8px_8px_15px_rgba(0,0,0,0.15)]' : ''
-            }`}
-          >
-            <Select 
-              onValueChange={setSelectedPrefix}
-              onOpenChange={(open) => setIsSelectActive(open)}
-            >
-              <SelectTrigger className="bg-[#e0e5ec] border-none shadow-[-5px_-5px_10px_rgba(255,255,255,0.8),5px_5px_10px_rgba(0,0,0,0.1)] transition-all duration-300 hover:shadow-[-8px_-8px_15px_rgba(255,255,255,0.9),8px_8px_15px_rgba(0,0,0,0.15)]">
+          <div className="shadow-[inset_-5px_-5px_10px_rgba(255,255,255,0.8),inset_5px_5px_10px_rgba(0,0,0,0.1)] rounded-xl p-2">
+            <Select onValueChange={setSelectedPrefix}>
+              <SelectTrigger className="bg-[#e0e5ec] border-none shadow-[-5px_-5px_10px_rgba(255,255,255,0.8),5px_5px_10px_rgba(0,0,0,0.1)]">
                 <SelectValue placeholder="Select prefix" />
               </SelectTrigger>
               <SelectContent>
@@ -53,16 +45,9 @@ const Index = () => {
             </Select>
           </div>
 
-          <div 
-            className={`shadow-[inset_-5px_-5px_10px_rgba(255,255,255,0.8),inset_5px_5px_10px_rgba(0,0,0,0.1)] rounded-xl p-2 transition-all duration-300 ease-in-out ${
-              isSelectActive ? 'scale-105 shadow-[inset_-8px_-8px_15px_rgba(255,255,255,0.9),inset_8px_8px_15px_rgba(0,0,0,0.15)]' : ''
-            }`}
-          >
-            <Select 
-              onValueChange={setSelectedSuffix}
-              onOpenChange={(open) => setIsSelectActive(open)}
-            >
-              <SelectTrigger className="bg-[#e0e5ec] border-none shadow-[-5px_-5px_10px_rgba(255,255,255,0.8),5px_5px_10px_rgba(0,0,0,0.1)] transition-all duration-300 hover:shadow-[-8px_-8px_15px_rgba(255,255,255,0.9),8px_8px_15px_rgba(0,0,0,0.15)]">
+          <div className="shadow-[inset_-5px_-5px_10px_rgba(255,255,255,0.8),inset_5px_5px_10px_rgba(0,0,0,0.1)] rounded-xl p-2">
+            <Select onValueChange={setSelectedSuffix}>
+              <SelectTrigger className="bg-[#e0e5ec] border-none shadow-[-5px_-5px_10px_rgba(255,255,255,0.8),5px_5px_10px_rgba(0,0,0,0.1)]">
                 <SelectValue placeholder="Select suffix" />
               </SelectTrigger>
               <SelectContent>
@@ -77,7 +62,7 @@ const Index = () => {
         </div>
 
         {selectedPrefix && selectedSuffix && (
-          <div className="space-y-4 animate-fade-in">
+          <div className="space-y-4">
             {explanation ? (
               <Card className="bg-[#e0e5ec] border-none shadow-[-10px_-10px_20px_rgba(255,255,255,0.8),10px_10px_20px_rgba(0,0,0,0.1)]">
                 <CardHeader>
