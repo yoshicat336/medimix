@@ -37,7 +37,7 @@ const Index = () => {
                 transform-gpu transition-transform duration-200 ease-out will-change-transform 
                 hover:scale-[1.02] active:scale-95 
                 active:shadow-[-2px_-2px_5px_rgba(255,255,255,0.8),2px_2px_5px_rgba(0,0,0,0.1)]
-                focus:outline-none"
+                focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"
               >
                 <SelectValue placeholder="Select prefix" />
               </SelectTrigger>
@@ -58,7 +58,7 @@ const Index = () => {
                 transform-gpu transition-transform duration-200 ease-out will-change-transform 
                 hover:scale-[1.02] active:scale-95 
                 active:shadow-[-2px_-2px_5px_rgba(255,255,255,0.8),2px_2px_5px_rgba(0,0,0,0.1)]
-                focus:outline-none"
+                focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"
               >
                 <SelectValue placeholder="Select suffix" />
               </SelectTrigger>
