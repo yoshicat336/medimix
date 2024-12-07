@@ -34,7 +34,7 @@ const Index = () => {
             <Select onValueChange={setSelectedPrefix}>
               <SelectTrigger 
                 className="bg-[#e0e5ec] border-none shadow-[-5px_-5px_10px_rgba(255,255,255,0.8),5px_5px_10px_rgba(0,0,0,0.1)] 
-                transition-[transform,box-shadow] duration-200 ease-out
+                transition-transform duration-200 ease-out
                 hover:scale-[1.02] active:scale-95 
                 active:shadow-[-2px_-2px_5px_rgba(255,255,255,0.8),2px_2px_5px_rgba(0,0,0,0.1)]
                 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"
@@ -55,7 +55,7 @@ const Index = () => {
             <Select onValueChange={setSelectedSuffix}>
               <SelectTrigger 
                 className="bg-[#e0e5ec] border-none shadow-[-5px_-5px_10px_rgba(255,255,255,0.8),5px_5px_10px_rgba(0,0,0,0.1)] 
-                transition-[transform,box-shadow] duration-200 ease-out
+                transition-transform duration-200 ease-out
                 hover:scale-[1.02] active:scale-95 
                 active:shadow-[-2px_-2px_5px_rgba(255,255,255,0.8),2px_2px_5px_rgba(0,0,0,0.1)]
                 focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"
