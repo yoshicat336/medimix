@@ -32,7 +32,7 @@ const Index = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div className="shadow-[inset_-5px_-5px_10px_rgba(255,255,255,0.8),inset_5px_5px_10px_rgba(0,0,0,0.1)] rounded-xl p-2 transform-gpu">
             <Select onValueChange={setSelectedPrefix}>
-              <SelectTrigger className="bg-[#e0e5ec] border-none shadow-[-5px_-5px_10px_rgba(255,255,255,0.8),5px_5px_10px_rgba(0,0,0,0.1)] transform-gpu transition-all duration-300 ease-out will-change-transform hover:scale-[1.02] active:scale-95 active:shadow-[-2px_-2px_5px_rgba(255,255,255,0.8),2px_2px_5px_rgba(0,0,0,0.1)]">
+              <SelectTrigger className="bg-[#e0e5ec] border-none shadow-[-5px_-5px_10px_rgba(255,255,255,0.8),5px_5px_10px_rgba(0,0,0,0.1)] transform-gpu transition-all duration-300 ease-out will-change-transform hover:scale-[1.02] active:scale-95 active:shadow-[-2px_-2px_5px_rgba(255,255,255,0.8),2px_2px_5px_rgba(0,0,0,0.1)] focus:outline-none">
                 <SelectValue placeholder="Select prefix" />
               </SelectTrigger>
               <SelectContent>
@@ -47,7 +47,7 @@ const Index = () => {
 
           <div className="shadow-[inset_-5px_-5px_10px_rgba(255,255,255,0.8),inset_5px_5px_10px_rgba(0,0,0,0.1)] rounded-xl p-2 transform-gpu">
             <Select onValueChange={setSelectedSuffix}>
-              <SelectTrigger className="bg-[#e0e5ec] border-none shadow-[-5px_-5px_10px_rgba(255,255,255,0.8),5px_5px_10px_rgba(0,0,0,0.1)] transform-gpu transition-all duration-300 ease-out will-change-transform hover:scale-[1.02] active:scale-95 active:shadow-[-2px_-2px_5px_rgba(255,255,255,0.8),2px_2px_5px_rgba(0,0,0,0.1)]">
+              <SelectTrigger className="bg-[#e0e5ec] border-none shadow-[-5px_-5px_10px_rgba(255,255,255,0.8),5px_5px_10px_rgba(0,0,0,0.1)] transform-gpu transition-all duration-300 ease-out will-change-transform hover:scale-[1.02] active:scale-95 active:shadow-[-2px_-2px_5px_rgba(255,255,255,0.8),2px_2px_5px_rgba(0,0,0,0.1)] focus:outline-none">
                 <SelectValue placeholder="Select suffix" />
               </SelectTrigger>
               <SelectContent>
