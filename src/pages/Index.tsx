@@ -22,6 +22,15 @@ const Index = () => {
     ? getExplanation(selectedPrefix, selectedSuffix)
     : null;
 
+  const selectTriggerClasses = `
+    bg-[#e0e5ec] border-none 
+    shadow-[-5px_-5px_10px_rgba(255,255,255,0.8),5px_5px_10px_rgba(0,0,0,0.1)]
+    hover:scale-[1.02] active:scale-95
+    active:shadow-[-2px_-2px_5px_rgba(255,255,255,0.8),2px_2px_5px_rgba(0,0,0,0.1)]
+    focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0
+    transition-transform duration-150 ease-out
+  `.trim();
+
   return (
     <div className="min-h-screen bg-[#e0e5ec] p-6">
       <div className="max-w-4xl mx-auto space-y-6">
@@ -32,13 +41,7 @@ const Index = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div className="shadow-[inset_-5px_-5px_10px_rgba(255,255,255,0.8),inset_5px_5px_10px_rgba(0,0,0,0.1)] rounded-xl p-2">
             <Select onValueChange={setSelectedPrefix}>
-              <SelectTrigger 
-                className="bg-[#e0e5ec] border-none shadow-[-5px_-5px_10px_rgba(255,255,255,0.8),5px_5px_10px_rgba(0,0,0,0.1)] 
-                transition-transform duration-200 ease-out
-                hover:scale-[1.02] active:scale-95 
-                active:shadow-[-2px_-2px_5px_rgba(255,255,255,0.8),2px_2px_5px_rgba(0,0,0,0.1)]
-                focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"
-              >
+              <SelectTrigger className={selectTriggerClasses}>
                 <SelectValue placeholder="Select prefix" />
               </SelectTrigger>
               <SelectContent className="bg-[#e0e5ec] border-none shadow-lg">
@@ -53,13 +56,7 @@ const Index = () => {
 
           <div className="shadow-[inset_-5px_-5px_10px_rgba(255,255,255,0.8),inset_5px_5px_10px_rgba(0,0,0,0.1)] rounded-xl p-2">
             <Select onValueChange={setSelectedSuffix}>
-              <SelectTrigger 
-                className="bg-[#e0e5ec] border-none shadow-[-5px_-5px_10px_rgba(255,255,255,0.8),5px_5px_10px_rgba(0,0,0,0.1)] 
-                transition-transform duration-200 ease-out
-                hover:scale-[1.02] active:scale-95 
-                active:shadow-[-2px_-2px_5px_rgba(255,255,255,0.8),2px_2px_5px_rgba(0,0,0,0.1)]
-                focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0"
-              >
+              <SelectTrigger className={selectTriggerClasses}>
                 <SelectValue placeholder="Select suffix" />
               </SelectTrigger>
               <SelectContent className="bg-[#e0e5ec] border-none shadow-lg">
