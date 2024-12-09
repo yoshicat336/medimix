@@ -5,7 +5,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/components/custom/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import SeverityBadge from "@/components/SeverityBadge";
 import {
