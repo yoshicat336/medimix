@@ -26,8 +26,9 @@ const Index = () => {
     bg-[#e0e5ec] border-none 
     shadow-[-5px_-5px_10px_rgba(255,255,255,0.8),5px_5px_10px_rgba(0,0,0,0.1)]
     hover:opacity-90
+    data-[state=open]:shadow-[-8px_-8px_15px_rgba(255,255,255,0.9),8px_8px_15px_rgba(0,0,0,0.2),0_0_20px_rgba(14,165,233,0.3)]
     focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0
-    transition-opacity duration-150
+    transition-all duration-300
   `.trim();
 
   return (
