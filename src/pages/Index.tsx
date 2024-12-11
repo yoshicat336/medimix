@@ -50,7 +50,6 @@ const Index = () => {
           p-4 rounded-lg
           hover:shadow-[-8px_-8px_15px_rgba(255,255,255,0.95),8px_8px_15px_rgba(0,0,0,0.2)]
           transition-all duration-300
-          animate-fade-in
           bg-gradient-to-r from-[#e0e5ec] via-[#e8edf4] to-[#e0e5ec]
         ">
           MediMix
@@ -62,9 +61,13 @@ const Index = () => {
               <SelectTrigger className={selectTriggerClasses}>
                 <SelectValue placeholder="Select prefix" />
               </SelectTrigger>
-              <SelectContent className="bg-[#e0e5ec] border-none shadow-lg">
+              <SelectContent className="bg-[rgba(255,255,255,0.7)] backdrop-blur-md border-none shadow-lg rounded-lg overflow-hidden">
                 {prefixes.map((prefix) => (
-                  <SelectItem key={prefix.value} value={prefix.value}>
+                  <SelectItem 
+                    key={prefix.value} 
+                    value={prefix.value}
+                    className="hover:bg-[rgba(255,255,255,0.3)] transition-colors duration-200"
+                  >
                     {prefix.label} ({prefix.meaning})
                   </SelectItem>
                 ))}
@@ -77,9 +80,13 @@ const Index = () => {
               <SelectTrigger className={selectTriggerClasses}>
                 <SelectValue placeholder="Select suffix" />
               </SelectTrigger>
-              <SelectContent className="bg-[#e0e5ec] border-none shadow-lg">
+              <SelectContent className="bg-[rgba(255,255,255,0.7)] backdrop-blur-md border-none shadow-lg rounded-lg overflow-hidden">
                 {suffixes.map((suffix) => (
-                  <SelectItem key={suffix.value} value={suffix.value}>
+                  <SelectItem 
+                    key={suffix.value} 
+                    value={suffix.value}
+                    className="hover:bg-[rgba(255,255,255,0.3)] transition-colors duration-200"
+                  >
                     {suffix.label} ({suffix.meaning})
                   </SelectItem>
                 ))}
