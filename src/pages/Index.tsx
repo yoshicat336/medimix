@@ -36,22 +36,20 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-[#e0e5ec] p-6">
       <div className="max-w-4xl mx-auto space-y-6">
-        <h1 className="text-4xl font-bold text-center text-medical-dark mb-8 
-          relative
-          before:content-[''] before:absolute before:inset-0
-          before:bg-[#e0e5ec]
-          before:transform before:translate-x-1 before:translate-y-1
-          before:rounded-lg before:-z-10
-          after:content-[''] after:absolute after:inset-0
-          after:bg-[#e0e5ec]
-          after:transform after:-translate-x-1 after:-translate-y-1
-          after:rounded-lg after:-z-10
-          shadow-[-6px_-6px_12px_rgba(255,255,255,0.9),6px_6px_12px_rgba(0,0,0,0.15)]
-          p-4 rounded-lg
-          hover:shadow-[-8px_-8px_15px_rgba(255,255,255,0.95),8px_8px_15px_rgba(0,0,0,0.2)]
-          transition-all duration-300
+        <h1 className="text-4xl font-bold text-center mb-8 
+          relative inline-block
+          text-transparent bg-clip-text
+          bg-gradient-to-b from-medical-dark to-medical
           animate-fade-in
-          bg-gradient-to-r from-[#e0e5ec] via-[#e8edf4] to-[#e0e5ec]
+          [text-shadow:3px_3px_6px_rgba(0,0,0,0.2),
+                      -2px_-2px_5px_rgba(255,255,255,0.8),
+                      0_0_20px_rgba(14,165,233,0.3),
+                      0_0_40px_rgba(14,165,233,0.15)]
+          after:content-['MediMix']
+          after:absolute after:inset-0
+          after:text-medical-dark/10
+          after:translate-x-[2px] after:translate-y-[2px]
+          after:pointer-events-none
         ">
           MediMix
         </h1>
