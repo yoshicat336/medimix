@@ -61,12 +61,12 @@ const Index = () => {
               <SelectTrigger className={selectTriggerClasses}>
                 <SelectValue placeholder="Select prefix" />
               </SelectTrigger>
-              <SelectContent className="bg-[rgba(255,255,255,0.7)] backdrop-blur-md border-none shadow-lg rounded-lg overflow-hidden">
+              <SelectContent className="bg-[rgba(255,255,255,0.25)] backdrop-blur-[12px] border border-[rgba(255,255,255,0.18)] shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] rounded-lg overflow-hidden">
                 {prefixes.map((prefix) => (
                   <SelectItem 
                     key={prefix.value} 
                     value={prefix.value}
-                    className="hover:bg-[rgba(255,255,255,0.3)] transition-colors duration-200"
+                    className="hover:bg-[rgba(255,255,255,0.2)] transition-colors duration-200"
                   >
                     {prefix.label} ({prefix.meaning})
                   </SelectItem>
@@ -80,12 +80,12 @@ const Index = () => {
               <SelectTrigger className={selectTriggerClasses}>
                 <SelectValue placeholder="Select suffix" />
               </SelectTrigger>
-              <SelectContent className="bg-[rgba(255,255,255,0.7)] backdrop-blur-md border-none shadow-lg rounded-lg overflow-hidden">
+              <SelectContent className="bg-[rgba(255,255,255,0.25)] backdrop-blur-[12px] border border-[rgba(255,255,255,0.18)] shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] rounded-lg overflow-hidden">
                 {suffixes.map((suffix) => (
                   <SelectItem 
                     key={suffix.value} 
                     value={suffix.value}
-                    className="hover:bg-[rgba(255,255,255,0.3)] transition-colors duration-200"
+                    className="hover:bg-[rgba(255,255,255,0.2)] transition-colors duration-200"
                   >
                     {suffix.label} ({suffix.meaning})
                   </SelectItem>
