@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Select,
   SelectContent,
@@ -19,11 +19,30 @@ const Index = () => {
   const [selectedPrefix, setSelectedPrefix] = useState("");
   const [selectedSuffix, setSelectedSuffix] = useState("");
   const [loading, setLoading] = useState(true);
+  const [showContent, setShowContent] = useState(false);
+  const loaderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const duration = Math.floor(Math.random() * (9000 - 5000 + 1)) + 5000; // Random duration between 5-9 seconds
+    const duration = Math.floor(Math.random() * (9000 - 5000 + 1)) + 5000;
+    
+    const handleAnimationEnd = (e: AnimationEvent) => {
+      if (e.animationName === 'size1_3' && !loading) {
+        setShowContent(true);
+      }
+    };
+
+    if (loaderRef.current) {
+      loaderRef.current.addEventListener('animationend', handleAnimationEnd);
+    }
+
     setTimeout(() => setLoading(false), duration);
-  }, []);
+
+    return () => {
+      if (loaderRef.current) {
+        loaderRef.current.removeEventListener('animationend', handleAnimationEnd);
+      }
+    };
+  }, [loading]);
 
   const explanation = selectedPrefix && selectedSuffix
     ? getExplanation(selectedPrefix, selectedSuffix)
@@ -40,7 +59,7 @@ const Index = () => {
     transition-all duration-300
   `.trim();
 
-  if (loading) {
+  if (loading || !showContent) {
     return (
       <div className="min-h-screen bg-[#e0e5ec] flex flex-col items-center justify-center p-6">
         <div className="w-full max-w-md space-y-6">
@@ -48,7 +67,7 @@ const Index = () => {
             MediMix
           </h1>
           <div className="space-y-8">
-            <div className="flex justify-center">
+            <div className="flex justify-center" ref={loaderRef}>
               <Loader />
             </div>
             <p className="text-center text-medical-dark">Loading medical database...</p>
@@ -59,7 +78,7 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#e0e5ec] p-6">
+    <div className="min-h-screen bg-[#e0e5ec] p-6 animate-spring-in">
       <div className="max-w-4xl mx-auto space-y-6">
         <h1 className="text-4xl font-bold text-center text-medical-dark mb-8 
           relative
