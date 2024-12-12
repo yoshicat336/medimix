@@ -7,8 +7,8 @@ import {
   SelectValue,
 } from "@/components/custom/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import SeverityBadge from "@/components/SeverityBadge";
+import Loader from "@/components/Loader";
 import {
   prefixes,
   suffixes,
@@ -19,26 +19,10 @@ const Index = () => {
   const [selectedPrefix, setSelectedPrefix] = useState("");
   const [selectedSuffix, setSelectedSuffix] = useState("");
   const [loading, setLoading] = useState(true);
-  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const duration = Math.floor(Math.random() * (9000 - 5000 + 1)) + 5000; // Random duration between 5-9 seconds
-    const startTime = Date.now();
-    
-    const updateProgress = () => {
-      const elapsed = Date.now() - startTime;
-      const newProgress = Math.min((elapsed / duration) * 100, 100);
-      
-      if (elapsed < duration) {
-        setProgress(newProgress);
-        requestAnimationFrame(updateProgress);
-      } else {
-        setProgress(100);
-        setTimeout(() => setLoading(false), 200); // Small delay after reaching 100%
-      }
-    };
-
-    requestAnimationFrame(updateProgress);
+    setTimeout(() => setLoading(false), duration);
   }, []);
 
   const explanation = selectedPrefix && selectedSuffix
@@ -63,8 +47,10 @@ const Index = () => {
           <h1 className="text-4xl font-bold text-center text-medical-dark mb-8">
             MediMix
           </h1>
-          <div className="space-y-4">
-            <Progress value={progress} className="h-2 w-full" />
+          <div className="space-y-8">
+            <div className="flex justify-center">
+              <Loader />
+            </div>
             <p className="text-center text-medical-dark">Loading medical database...</p>
           </div>
         </div>
@@ -158,7 +144,7 @@ const Index = () => {
                 </CardContent>
               </Card>
             ) : (
-              <Card className="bg-[#e0e5ec] border-none shadow-[-10px_-10px_20px_rgba(255,255,255,0.8),10px_10px_20px_rgba(0,0,0,0.1)]">
+              <Card className="bg-[#e0e5ec] border-none shadow-[-10px_-10px_20px_rgba(255,255,255,0.8),10px_10px_20px rgba(0,0,0,0.1)]">
                 <CardContent className="py-6">
                   <p className="text-lg text-gray-600 text-center">
                     No explanation available for this combination yet.
