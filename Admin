@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #ccc;
+            border-top: 5px solid #1e90ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            cursor: pointer;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .pin-pad {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #e0e0e0;
+            box-shadow: 10px 10px 20px #bebebe, -10px -10px 20px #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .pin-pad input {
+            font-size: 1.2em;
+            text-align: center;
+            margin: 10px 0;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            box-shadow: inset 4px 4px 8px #bebebe, inset -4px -4px 8px #ffffff;
+        }
+        .pin-pad button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 8px;
+            background: #1e90ff;
+            color: white;
+            font-size: 1em;
+            cursor: pointer;
+            box-shadow: 4px 4px 8px #bebebe, -4px -4px 8px #ffffff;
+        }
+        .feedback-manager {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
+            max-height: 80%;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="loader" onclick="showPinPad()"></div>
+
+    <div class="pin-pad" id="pinPad">
+        <p>Enter PIN</p>
+        <input type="password" id="pinInput" maxlength="4">
+        <button onclick="verifyPin()">Submit</button>
+    </div>
+
+    <div class="feedback-manager" id="feedbackManager">
+        <h2>Feedback Manager</h2>
+        <div id="feedbackContent">
+            <!-- Feedback data will appear here -->
+        </div>
+    </div>
+
+    <script>
+        const correctPin = "0312";
+
+        function showPinPad() {
+            document.getElementById('pinPad').style.display = 'block';
+        }
+
+        function verifyPin() {
+            const pin = document.getElementById('pinInput').value;
+            if (pin === correctPin) {
+                document.getElementById('pinPad').style.display = 'none';
+                document.getElementById('feedbackManager').style.display = 'block';
+                loadFeedback();
+            } else {
+                alert('Incorrect PIN');
+            }
+        }
+
+        function loadFeedback() {
+            const feedbackContent = document.getElementById('feedbackContent');
+            // Placeholder for dynamically loaded feedback
+            feedbackContent.innerHTML = "<p>No feedback available yet.</p>";
+        }
+    </script>
+</body>
+</html>
