@@ -21,13 +21,17 @@ const Index = () => {
   const [loading, setLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
   const loaderRef = useRef<HTMLDivElement>(null);
+  const animationCompleteRef = useRef(false);
 
   useEffect(() => {
     const duration = Math.floor(Math.random() * (9000 - 5000 + 1)) + 5000;
     
     const handleAnimationEnd = (e: AnimationEvent) => {
-      if (e.animationName === 'size1_3' && !loading) {
-        setShowContent(true);
+      if (e.animationName === 'size1_3') {
+        animationCompleteRef.current = true;
+        if (!loading) {
+          setShowContent(true);
+        }
       }
     };
 
@@ -35,14 +39,19 @@ const Index = () => {
       loaderRef.current.addEventListener('animationend', handleAnimationEnd);
     }
 
-    setTimeout(() => setLoading(false), duration);
+    setTimeout(() => {
+      setLoading(false);
+      if (animationCompleteRef.current) {
+        setShowContent(true);
+      }
+    }, duration);
 
     return () => {
       if (loaderRef.current) {
         loaderRef.current.removeEventListener('animationend', handleAnimationEnd);
       }
     };
-  }, [loading]);
+  }, []);
 
   const explanation = selectedPrefix && selectedSuffix
     ? getExplanation(selectedPrefix, selectedSuffix)
