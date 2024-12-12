@@ -36,10 +36,13 @@ const Index = () => {
     };
 
     if (loaderRef.current) {
-      loaderRef.current.addEventListener('animationend', handleAnimationEnd);
+      const element = loaderRef.current.querySelector('.item3');
+      if (element) {
+        element.addEventListener('animationend', handleAnimationEnd);
+      }
     }
 
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setLoading(false);
       if (animationCompleteRef.current) {
         setShowContent(true);
@@ -48,8 +51,12 @@ const Index = () => {
 
     return () => {
       if (loaderRef.current) {
-        loaderRef.current.removeEventListener('animationend', handleAnimationEnd);
+        const element = loaderRef.current.querySelector('.item3');
+        if (element) {
+          element.removeEventListener('animationend', handleAnimationEnd);
+        }
       }
+      clearTimeout(timer);
     };
   }, []);
 
