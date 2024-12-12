@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Select,
   SelectContent,
@@ -7,6 +7,7 @@ import {
   SelectValue,
 } from "@/components/custom/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import SeverityBadge from "@/components/SeverityBadge";
 import {
   prefixes,
@@ -17,6 +18,28 @@ import {
 const Index = () => {
   const [selectedPrefix, setSelectedPrefix] = useState("");
   const [selectedSuffix, setSelectedSuffix] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const duration = Math.floor(Math.random() * (9000 - 5000 + 1)) + 5000; // Random duration between 5-9 seconds
+    const startTime = Date.now();
+    
+    const updateProgress = () => {
+      const elapsed = Date.now() - startTime;
+      const newProgress = Math.min((elapsed / duration) * 100, 100);
+      
+      if (elapsed < duration) {
+        setProgress(newProgress);
+        requestAnimationFrame(updateProgress);
+      } else {
+        setProgress(100);
+        setTimeout(() => setLoading(false), 200); // Small delay after reaching 100%
+      }
+    };
+
+    requestAnimationFrame(updateProgress);
+  }, []);
 
   const explanation = selectedPrefix && selectedSuffix
     ? getExplanation(selectedPrefix, selectedSuffix)
@@ -32,6 +55,22 @@ const Index = () => {
     focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0
     transition-all duration-300
   `.trim();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#e0e5ec] flex flex-col items-center justify-center p-6">
+        <div className="w-full max-w-md space-y-6">
+          <h1 className="text-4xl font-bold text-center text-medical-dark mb-8">
+            MediMix
+          </h1>
+          <div className="space-y-4">
+            <Progress value={progress} className="h-2 w-full" />
+            <p className="text-center text-medical-dark">Loading medical database...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#e0e5ec] p-6">
