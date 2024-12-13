@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import LoadingScreen from "@/components/LoadingScreen";
 import MedicalTermSelector from "@/components/MedicalTermSelector";
 import ExplanationCard from "@/components/ExplanationCard";
-import ContactForm from "@/components/ContactForm";
 import CustomRadioGroup from "@/components/CustomRadioGroup";
 
 const Index = () => {
@@ -66,8 +65,6 @@ const Index = () => {
           selectedPrefix={selectedPrefix}
           selectedSuffix={selectedSuffix}
         />
-
-        <ContactForm />
       </div>
     </div>
   );
