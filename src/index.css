@@ -101,6 +101,42 @@
 }
 
 @layer components {
+  .loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .loader .item {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: #4b5563;
+    animation: loader-animation 0.8s ease-in-out infinite;
+  }
+
+  .loader .item1 {
+    animation-delay: -0.4s;
+  }
+
+  .loader .item2 {
+    animation-delay: -0.2s;
+  }
+
+  .loader .item3 {
+    animation-delay: 0s;
+  }
+
+  @keyframes loader-animation {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+  }
+
   .radiogroup {
     padding: 48px 64px;
     border-radius: 16px;
