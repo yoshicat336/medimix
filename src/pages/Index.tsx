@@ -3,11 +3,13 @@ import LoadingScreen from "@/components/LoadingScreen";
 import MedicalTermSelector from "@/components/MedicalTermSelector";
 import ExplanationCard from "@/components/ExplanationCard";
 import ContactForm from "@/components/ContactForm";
+import CustomRadioGroup from "@/components/CustomRadioGroup";
 
 const Index = () => {
   const [selectedPrefix, setSelectedPrefix] = useState("");
   const [selectedSuffix, setSelectedSuffix] = useState("");
   const [loading, setLoading] = useState(true);
+  const [selectedOption, setSelectedOption] = useState("");
 
   useEffect(() => {
     const duration = Math.floor(Math.random() * (9000 - 5000 + 1)) + 5000;
@@ -17,6 +19,13 @@ const Index = () => {
   if (loading) {
     return <LoadingScreen />;
   }
+
+  const options = [
+    { value: "a", label: "a) close" },
+    { value: "b", label: "b) remove" },
+    { value: "c", label: "c) delete" },
+    { value: "d", label: "d) all of the above" },
+  ];
 
   return (
     <div className="min-h-screen bg-[#e0e5ec] p-6">
@@ -39,6 +48,12 @@ const Index = () => {
         ">
           MediMix
         </h1>
+
+        <CustomRadioGroup 
+          options={options} 
+          name="app" 
+          onChange={setSelectedOption}
+        />
 
         <MedicalTermSelector
           selectedPrefix={selectedPrefix}
