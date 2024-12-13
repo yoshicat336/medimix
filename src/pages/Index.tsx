@@ -3,12 +3,16 @@ import LoadingScreen from "@/components/LoadingScreen";
 import MedicalTermSelector from "@/components/MedicalTermSelector";
 import ExplanationCard from "@/components/ExplanationCard";
 import CustomRadioGroup from "@/components/CustomRadioGroup";
+import ContactForm from "@/components/ContactForm";
+import PinPad from "@/components/PinPad";
 
 const Index = () => {
   const [selectedPrefix, setSelectedPrefix] = useState("");
   const [selectedSuffix, setSelectedSuffix] = useState("");
   const [loading, setLoading] = useState(true);
   const [selectedOption, setSelectedOption] = useState("");
+  const [showPinPad, setShowPinPad] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
     const duration = Math.floor(Math.random() * (9000 - 5000 + 1)) + 5000;
@@ -25,6 +29,15 @@ const Index = () => {
     { value: "c", label: "c) delete" },
     { value: "d", label: "d) all of the above" },
   ];
+
+  const handleLoaderClick = () => {
+    setShowPinPad(true);
+  };
+
+  const handlePinSuccess = () => {
+    setShowPinPad(false);
+    setShowForm(true);
+  };
 
   return (
     <div className="min-h-screen bg-[#e0e5ec] p-6">
@@ -48,6 +61,14 @@ const Index = () => {
           MediMix
         </h1>
 
+        <div onClick={handleLoaderClick} className="cursor-pointer">
+          <div className="loader">
+            <div className="item item1"></div>
+            <div className="item item2"></div>
+            <div className="item item3"></div>
+          </div>
+        </div>
+
         <CustomRadioGroup 
           options={options} 
           name="app" 
@@ -65,6 +86,18 @@ const Index = () => {
           selectedPrefix={selectedPrefix}
           selectedSuffix={selectedSuffix}
         />
+
+        <PinPad 
+          isOpen={showPinPad} 
+          onClose={() => setShowPinPad(false)}
+          onSuccess={handlePinSuccess}
+        />
+
+        {showForm && (
+          <div className="mt-12">
+            <ContactForm />
+          </div>
+        )}
       </div>
     </div>
   );
