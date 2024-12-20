@@ -9,6 +9,8 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import SeverityBadge from "@/components/SeverityBadge";
 import Loader from "@/components/Loader";
+import PinPad from "@/components/PinPad";
+import ContributionManager from "@/components/ContributionManager";
 import {
   prefixes,
   suffixes,
@@ -19,6 +21,8 @@ const Index = () => {
   const [selectedPrefix, setSelectedPrefix] = useState("");
   const [selectedSuffix, setSelectedSuffix] = useState("");
   const [loading, setLoading] = useState(true);
+  const [isPinPadOpen, setIsPinPadOpen] = useState(false);
+  const [isContributionManagerOpen, setIsContributionManagerOpen] = useState(false);
 
   useEffect(() => {
     const duration = Math.floor(Math.random() * (9000 - 5000 + 1)) + 5000;
@@ -28,6 +32,15 @@ const Index = () => {
   const explanation = selectedPrefix && selectedSuffix
     ? getExplanation(selectedPrefix, selectedSuffix)
     : null;
+
+  const handleLoaderClick = () => {
+    setIsPinPadOpen(true);
+  };
+
+  const handleCorrectPin = () => {
+    setIsPinPadOpen(false);
+    setIsContributionManagerOpen(true);
+  };
 
   const selectTriggerClasses = `
     bg-[#e0e5ec] border-none 
@@ -48,12 +61,21 @@ const Index = () => {
             MediMix
           </h1>
           <div className="space-y-8">
-            <div className="flex justify-center">
+            <div className="flex justify-center cursor-pointer" onClick={handleLoaderClick}>
               <Loader />
             </div>
             <p className="text-center text-medical-dark">Loading medical database...</p>
           </div>
         </div>
+        <PinPad 
+          isOpen={isPinPadOpen}
+          onClose={() => setIsPinPadOpen(false)}
+          onCorrectPin={handleCorrectPin}
+        />
+        <ContributionManager
+          isOpen={isContributionManagerOpen}
+          onClose={() => setIsContributionManagerOpen(false)}
+        />
       </div>
     );
   }
