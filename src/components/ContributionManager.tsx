@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import SeverityBadge from "@/components/SeverityBadge";
 
 interface ContributionManagerProps {
   isOpen: boolean;
@@ -20,7 +21,12 @@ const ContributionManager = ({ isOpen, onClose }: ContributionManagerProps) => {
       id: 1,
       prefix: "cardio",
       suffix: "itis",
-      explanation: "Inflammation of the heart",
+      explanation: {
+        plainLanguage: "Inflammation of the heart",
+        severity: "high" as const,
+        reasoning: "Inflammation of heart tissue can be serious and requires immediate medical attention",
+        pronunciation: "kar-dee-oh-eye-tis",
+      },
       submittedBy: "dr.smith@example.com",
       date: "2024-03-12",
     },
@@ -28,20 +34,31 @@ const ContributionManager = ({ isOpen, onClose }: ContributionManagerProps) => {
       id: 2,
       prefix: "dermato",
       suffix: "osis",
-      explanation: "Abnormal skin condition",
+      explanation: {
+        plainLanguage: "Abnormal skin condition",
+        severity: "moderate" as const,
+        reasoning: "Various skin conditions can affect quality of life but are often treatable",
+        pronunciation: "der-muh-toh-sis",
+      },
       submittedBy: "dr.jones@example.com",
       date: "2024-03-11",
     },
   ];
 
   const handleApprove = (id: number) => {
-    console.log("Approved contribution:", id);
-    // Would typically make an API call to approve
+    const contribution = mockContributions.find(c => c.id === id);
+    if (contribution) {
+      // In a real app, this would update the actual combinations file
+      console.log("Approved contribution:", contribution);
+      // Would typically make an API call to approve and update the codebase
+    }
+    onClose();
   };
 
   const handleReject = (id: number) => {
     console.log("Rejected contribution:", id);
     // Would typically make an API call to reject
+    onClose();
   };
 
   return (
@@ -62,7 +79,17 @@ const ContributionManager = ({ isOpen, onClose }: ContributionManagerProps) => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  <p className="text-gray-600">{contribution.explanation}</p>
+                  <p className="text-gray-600">{contribution.explanation.plainLanguage}</p>
+                  <div className="flex items-center space-x-2">
+                    <span className="font-medium">Severity:</span>
+                    <SeverityBadge severity={contribution.explanation.severity} />
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    Pronunciation: <span className="italic">{contribution.explanation.pronunciation}</span>
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Reasoning: {contribution.explanation.reasoning}
+                  </p>
                   <div className="text-sm text-gray-500">
                     <p>Submitted by: {contribution.submittedBy}</p>
                     <p>Date: {contribution.date}</p>

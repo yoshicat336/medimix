@@ -7,10 +7,12 @@ import {
   SelectValue,
 } from "@/components/custom/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import SeverityBadge from "@/components/SeverityBadge";
 import Loader from "@/components/Loader";
 import PinPad from "@/components/PinPad";
 import ContributionManager from "@/components/ContributionManager";
+import ContributionForm from "@/components/ContributionForm";
 import {
   prefixes,
   suffixes,
@@ -23,6 +25,7 @@ const Index = () => {
   const [loading, setLoading] = useState(true);
   const [isPinPadOpen, setIsPinPadOpen] = useState(false);
   const [isContributionManagerOpen, setIsContributionManagerOpen] = useState(false);
+  const [isContributionFormOpen, setIsContributionFormOpen] = useState(false);
 
   useEffect(() => {
     const duration = Math.floor(Math.random() * (9000 - 5000 + 1)) + 5000;
@@ -167,16 +170,30 @@ const Index = () => {
               </Card>
             ) : (
               <Card className="bg-[#e0e5ec] border-none shadow-[-10px_-10px_20px_rgba(255,255,255,0.8),10px_10px_20px_rgba(0,0,0,0.1)] hover:shadow-[-12px_-12px_24px_rgba(255,255,255,0.9),12px_12px_24px_rgba(0,0,0,0.15)] transition-all duration-300">
-                <CardContent className="py-6">
+                <CardContent className="py-6 space-y-4">
                   <p className="text-lg text-gray-600 text-center">
                     No explanation available for this combination yet.
                   </p>
+                  <div className="flex justify-center">
+                    <Button
+                      onClick={() => setIsContributionFormOpen(true)}
+                      className="bg-medical hover:bg-medical-dark text-white shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.1)]"
+                    >
+                      Suggest Definition
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             )}
           </div>
         )}
       </div>
+      <ContributionForm
+        isOpen={isContributionFormOpen}
+        onClose={() => setIsContributionFormOpen(false)}
+        prefix={selectedPrefix}
+        suffix={selectedSuffix}
+      />
     </div>
   );
 };
