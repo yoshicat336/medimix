@@ -21,7 +21,7 @@ const Index = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const duration = Math.floor(Math.random() * (9000 - 5000 + 1)) + 5000; // Random duration between 5-9 seconds
+    const duration = Math.floor(Math.random() * (9000 - 5000 + 1)) + 5000;
     setTimeout(() => setLoading(false), duration);
   }, []);
 
@@ -144,7 +144,7 @@ const Index = () => {
                 </CardContent>
               </Card>
             ) : (
-              <Card className="bg-[#e0e5ec] border-none shadow-[-10px_-10px_20px_rgba(255,255,255,0.8),10px_10px_20px rgba(0,0,0,0.1)]">
+              <Card className="bg-[#e0e5ec] border-none shadow-[-10px_-10px_20px_rgba(255,255,255,0.8),10px_10px_20px_rgba(0,0,0,0.1)] hover:shadow-[-12px_-12px_24px_rgba(255,255,255,0.9),12px_12px_24px_rgba(0,0,0,0.15)] transition-all duration-300">
                 <CardContent className="py-6">
                   <p className="text-lg text-gray-600 text-center">
                     No explanation available for this combination yet.
