@@ -177,7 +177,7 @@ const Index = () => {
                   <div className="flex justify-center">
                     <Button
                       onClick={() => setIsContributionFormOpen(true)}
-                      className="bg-medical hover:bg-medical-dark text-white shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.1)]"
+                      className="bg-[#e0e5ec] text-medical-dark hover:text-medical shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.1)] hover:shadow-[-4px_-4px_8px_rgba(255,255,255,0.9),4px_4px_8px_rgba(0,0,0,0.15)] transition-all duration-300"
                     >
                       Suggest Definition
                     </Button>
