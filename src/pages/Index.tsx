@@ -56,36 +56,20 @@ const Index = () => {
     transition-all duration-300
   `.trim();
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#e0e5ec] flex flex-col items-center justify-center p-6">
-        <div className="w-full max-w-md space-y-6">
-          <h1 className="text-4xl font-bold text-center text-medical-dark mb-8">
-            MediMix
-          </h1>
-          <div className="space-y-8">
-            <div className="flex justify-center cursor-pointer" onClick={handleLoaderClick}>
-              <Loader />
-            </div>
-            <p className="text-center text-medical-dark">Loading medical database...</p>
-          </div>
+  const mainContent = loading ? (
+    <div className="w-full max-w-md space-y-6">
+      <h1 className="text-4xl font-bold text-center text-medical-dark mb-8">
+        MediMix
+      </h1>
+      <div className="space-y-8">
+        <div className="flex justify-center cursor-pointer" onClick={handleLoaderClick}>
+          <Loader />
         </div>
-        <PinPad 
-          isOpen={isPinPadOpen}
-          onClose={() => setIsPinPadOpen(false)}
-          onCorrectPin={handleCorrectPin}
-        />
-        <ContributionManager
-          isOpen={isContributionManagerOpen}
-          onClose={() => setIsContributionManagerOpen(false)}
-        />
+        <p className="text-center text-medical-dark">Loading medical database...</p>
       </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-[#e0e5ec] p-6">
-      <div className="max-w-4xl mx-auto space-y-6">
+    </div>
+  ) : (
+    <div className="max-w-4xl mx-auto space-y-6">
         <h1 className="text-4xl font-bold text-center text-medical-dark mb-8 
           relative
           before:content-[''] before:absolute before:inset-0
@@ -188,6 +172,21 @@ const Index = () => {
           </div>
         )}
       </div>
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-[#e0e5ec] flex flex-col items-center justify-center p-6">
+      {mainContent}
+      <PinPad 
+        isOpen={isPinPadOpen}
+        onClose={() => setIsPinPadOpen(false)}
+        onCorrectPin={handleCorrectPin}
+      />
+      <ContributionManager
+        isOpen={isContributionManagerOpen}
+        onClose={() => setIsContributionManagerOpen(false)}
+      />
       <ContributionForm
         isOpen={isContributionFormOpen}
         onClose={() => setIsContributionFormOpen(false)}
