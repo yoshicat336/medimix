@@ -15,10 +15,27 @@ const Index = () => {
   const [isPinPadOpen, setIsPinPadOpen] = useState(false);
   const [isContributionManagerOpen, setIsContributionManagerOpen] = useState(false);
   const [isContributionFormOpen, setIsContributionFormOpen] = useState(false);
+  const [greeting, setGreeting] = useState("");
 
   useEffect(() => {
     const duration = Math.floor(Math.random() * (9000 - 5000 + 1)) + 5000;
     setTimeout(() => setLoading(false), duration);
+
+    // Set up greeting based on Seattle time
+    const hour = new Date().toLocaleString("en-US", { 
+      timeZone: "America/Los_Angeles",
+      hour: 'numeric',
+      hour12: false 
+    });
+    
+    const hourNum = parseInt(hour);
+    let timeGreeting = "Good evening";
+    if (hourNum >= 5 && hourNum < 12) {
+      timeGreeting = "Good morning";
+    } else if (hourNum >= 12 && hourNum < 17) {
+      timeGreeting = "Good afternoon";
+    }
+    setGreeting(`${timeGreeting}, August`);
   }, []);
 
   const explanation = selectedPrefix && selectedSuffix
@@ -54,6 +71,7 @@ const Index = () => {
         <ContributionManager
           isOpen={isContributionManagerOpen}
           onClose={() => setIsContributionManagerOpen(false)}
+          greeting={greeting}
         />
       </div>
     );
@@ -62,7 +80,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-[#e0e5ec] p-6">
       <div className="max-w-4xl mx-auto space-y-6">
-        <Header />
+        <Header onHomeClick={() => setIsContributionManagerOpen(false)} />
         <TermSelectors
           selectedPrefix={selectedPrefix}
           selectedSuffix={selectedSuffix}
@@ -83,6 +101,11 @@ const Index = () => {
         onClose={() => setIsContributionFormOpen(false)}
         prefix={selectedPrefix}
         suffix={selectedSuffix}
+      />
+      <ContributionManager
+        isOpen={isContributionManagerOpen}
+        onClose={() => setIsContributionManagerOpen(false)}
+        greeting={greeting}
       />
     </div>
   );
