@@ -17,6 +17,7 @@ import {
 } from "@/components/custom/select";
 import { useForm } from "react-hook-form";
 import { SeverityLevel } from "@/data/types";
+import { useToast } from "@/hooks/use-toast";
 
 interface ContributionFormProps {
   isOpen: boolean;
@@ -34,14 +35,31 @@ interface FormData {
 
 const ContributionForm = ({ isOpen, onClose, prefix, suffix }: ContributionFormProps) => {
   const { register, handleSubmit, reset } = useForm<FormData>();
+  const { toast } = useToast();
 
   const onSubmit = (data: FormData) => {
-    // In a real app, this would make an API call
-    console.log("Contribution submitted:", {
+    const contribution = {
       ...data,
       prefix,
       suffix,
+      timestamp: new Date(),
+    };
+
+    // Get existing contributions from localStorage
+    const existingContributions = localStorage.getItem('contributions');
+    const contributions = existingContributions ? JSON.parse(existingContributions) : [];
+    
+    // Add new contribution
+    contributions.push(contribution);
+    
+    // Save back to localStorage
+    localStorage.setItem('contributions', JSON.stringify(contributions));
+
+    toast({
+      title: "Contribution submitted",
+      description: "Your suggestion has been submitted for review.",
     });
+
     reset();
     onClose();
   };
