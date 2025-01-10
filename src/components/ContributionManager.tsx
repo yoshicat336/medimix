@@ -6,6 +6,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { SeverityLevel } from "@/data/types";
+import { useToast } from "@/hooks/use-toast";
+import { combinationExplanations } from "@/data/combinations";
 
 interface Contribution {
   prefix: string;
@@ -24,6 +26,8 @@ interface ContributionManagerProps {
 }
 
 const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerProps) => {
+  const { toast } = useToast();
+
   // This would typically come from a database, but for now we'll get it from localStorage
   const getContributions = (): Contribution[] => {
     const savedContributions = localStorage.getItem('contributions');
@@ -33,8 +37,30 @@ const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerP
   const contributions = getContributions();
 
   const handleApprove = (contribution: Contribution) => {
-    // This would typically make an API call to update the database
-    console.log('Approved contribution:', contribution);
+    // Add to combinations database
+    const key = `${contribution.prefix}-${contribution.suffix}`;
+    combinationExplanations[key] = {
+      plainLanguage: contribution.plainLanguage,
+      severity: contribution.severity,
+      reasoning: contribution.reasoning,
+      pronunciation: contribution.pronunciation,
+    };
+
+    // Remove from pending contributions
+    const updatedContributions = contributions.filter(
+      c => !(c.prefix === contribution.prefix && c.suffix === contribution.suffix)
+    );
+    localStorage.setItem('contributions', JSON.stringify(updatedContributions));
+
+    // Show success toast
+    toast({
+      title: "Contribution approved",
+      description: `${contribution.prefix}${contribution.suffix} has been added to the database.`,
+    });
+
+    // Force a re-render by updating localStorage
+    localStorage.setItem('contributions', JSON.stringify(updatedContributions));
+    window.location.reload(); // Refresh to show updated state
   };
 
   return (
