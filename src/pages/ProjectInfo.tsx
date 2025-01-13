@@ -52,6 +52,7 @@ const ProjectInfo = () => {
             <div>
               <h2 className="text-xl font-semibold mb-2 text-medical-dark">Credits</h2>
               <ul className="list-disc list-inside space-y-2 text-gray-700">
+                <li>Created by August Quinlan</li>
                 <li>Built with Lovable - AI-powered web development platform</li>
                 <li>Powered by OpenAI - Advanced language model technology</li>
               </ul>
