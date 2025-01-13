@@ -37,17 +37,6 @@ const ProjectInfo = () => {
                 <li>React Query - For efficient data fetching and caching</li>
               </ul>
             </div>
-            
-            <div>
-              <h2 className="text-xl font-semibold mb-2 text-medical-dark">Features</h2>
-              <ul className="list-disc list-inside space-y-2 text-gray-700">
-                <li>Interactive medical term learning</li>
-                <li>Community contributions system</li>
-                <li>Report system for incorrect information</li>
-                <li>Admin dashboard for content management</li>
-                <li>Responsive design for all devices</li>
-              </ul>
-            </div>
 
             <div>
               <h2 className="text-xl font-semibold mb-2 text-medical-dark">Credits</h2>
