@@ -8,18 +8,20 @@ interface HeaderProps {
 
 const Header = ({ onHomeClick }: HeaderProps) => {
   return (
-    <div className="flex justify-between items-center mb-8">
+    <div className="flex justify-center items-center mb-8 relative">
       <h1 
         className="text-4xl font-bold text-center text-medical-dark cursor-pointer"
         onClick={onHomeClick}
       >
         MediMix
       </h1>
-      <Link to="/project-info">
-        <Button variant="ghost" size="icon">
-          <Info className="h-5 w-5" />
-        </Button>
-      </Link>
+      <div className="absolute right-0">
+        <Link to="/project-info">
+          <Button variant="ghost" size="icon">
+            <Info className="h-5 w-5" />
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 };
