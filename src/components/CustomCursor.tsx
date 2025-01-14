@@ -72,11 +72,11 @@ const CustomCursor = () => {
         this.position.pointerY = event.pageY + this.root.getBoundingClientRect().y;
         this.position.distanceX = this.previousPointerX - this.position.pointerX;
         this.position.distanceY = this.previousPointerY - this.position.pointerY;
-        this.distance = Math.sqrt(this.position.distanceY ** 2 + this.position.distanceX ** 2);
+        this.position.distance = Math.sqrt(this.position.distanceY ** 2 + this.position.distanceX ** 2);
 
         this.cursor.style.transform = `translate3d(${this.position.pointerX}px, ${this.position.pointerY}px, 0)`;
 
-        if (this.distance > 1) {
+        if (this.position.distance > 1) {
           this.rotate(this.position);
         } else {
           this.cursor.style.transform += ` rotate(${this.angleDisplace}deg)`;
