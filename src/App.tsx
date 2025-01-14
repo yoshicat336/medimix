@@ -21,11 +21,12 @@ const App = () => (
           bottom: '10px',
           right: '10px',
           fontSize: '12px',
-          color: 'rgba(0, 0, 0, 0.3)',
+          color: 'rgba(0, 0, 0, 0)',
           pointerEvents: 'none',
           userSelect: 'none',
-          zIndex: 9999,
-          fontFamily: 'monospace'
+          zIndex: -1,
+          fontFamily: 'monospace',
+          opacity: 0
         }}
       >
         Built with ❤️ by GPT Engineer
