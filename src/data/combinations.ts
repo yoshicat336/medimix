@@ -1,2 +1,2 @@
-// This file is now just a re-export from the combinations folder
-export { combinationExplanations } from './combinations';
+// Export directly from the combinations folder
+export { combinationExplanations } from './combinations/index';
