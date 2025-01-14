@@ -15,6 +15,21 @@ const App = () => (
       <CustomCursor />
       <Toaster />
       <Sonner />
+      <div 
+        style={{
+          position: 'fixed',
+          bottom: '10px',
+          right: '10px',
+          fontSize: '12px',
+          color: 'rgba(0, 0, 0, 0.3)',
+          pointerEvents: 'none',
+          userSelect: 'none',
+          zIndex: 9999,
+          fontFamily: 'monospace'
+        }}
+      >
+        Built with ❤️ by GPT Engineer
+      </div>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
