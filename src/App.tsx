@@ -29,7 +29,7 @@ const App = () => (
           opacity: 0
         }}
       >
-        Built with ❤️ by GPT Engineer
+        Built with ❤️ by August Quinlan
       </div>
       <BrowserRouter>
         <Routes>
