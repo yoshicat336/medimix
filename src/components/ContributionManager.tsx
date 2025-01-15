@@ -58,6 +58,17 @@ const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerP
       pronunciation: contribution.pronunciation,
     };
 
+    // Save to localStorage
+    const savedCombinations = localStorage.getItem('approvedCombinations') || '{}';
+    const combinations = JSON.parse(savedCombinations);
+    combinations[key] = {
+      plainLanguage: contribution.plainLanguage,
+      severity: contribution.severity,
+      reasoning: contribution.reasoning,
+      pronunciation: contribution.pronunciation,
+    };
+    localStorage.setItem('approvedCombinations', JSON.stringify(combinations));
+
     // Remove from pending contributions
     const updatedContributions = contributions.filter(
       c => !(c.prefix === contribution.prefix && c.suffix === contribution.suffix)
