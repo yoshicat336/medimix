@@ -5,6 +5,8 @@ import SeverityBadge from "@/components/SeverityBadge";
 import { CombinationExplanation } from "@/data/types";
 import ReportForm from "./ReportForm";
 import { AlertTriangle } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 interface ExplanationCardProps {
   prefix: string;
@@ -21,7 +23,39 @@ const ExplanationCard = ({
 }: ExplanationCardProps) => {
   const [isReportFormOpen, setIsReportFormOpen] = useState(false);
 
-  if (!explanation) {
+  const { data: approvedExplanation } = useQuery({
+    queryKey: ['approved-combination', prefix, suffix],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('approved_combinations')
+        .select('*')
+        .eq('prefix', prefix)
+        .eq('suffix', suffix)
+        .single();
+
+      if (error) {
+        console.error('Error fetching approved combination:', error);
+        return null;
+      }
+
+      if (data) {
+        return {
+          plainLanguage: data.plain_language,
+          severity: data.severity,
+          reasoning: data.reasoning,
+          pronunciation: data.pronunciation,
+        } as CombinationExplanation;
+      }
+
+      return null;
+    },
+    enabled: !!prefix && !!suffix,
+  });
+
+  // Use approved explanation if available, otherwise fall back to hardcoded explanation
+  const finalExplanation = approvedExplanation || explanation;
+
+  if (!finalExplanation) {
     return (
       <Card className="bg-[#e0e5ec] border-none shadow-[-10px_-10px_20px_rgba(255,255,255,0.8),10px_10px_20px_rgba(0,0,0,0.1)] hover:shadow-[-12px_-12px_24px_rgba(255,255,255,0.9),12px_12px_24px_rgba(0,0,0,0.15)] transition-all duration-300">
         <CardContent className="py-6 space-y-4">
@@ -60,16 +94,16 @@ const ExplanationCard = ({
           </Button>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-lg">{explanation.plainLanguage}</p>
+          <p className="text-lg">{finalExplanation.plainLanguage}</p>
           <div className="flex items-center space-x-2">
             <span className="font-medium">Severity:</span>
-            <SeverityBadge severity={explanation.severity} />
+            <SeverityBadge severity={finalExplanation.severity} />
           </div>
           <div className="mt-4">
             <p className="font-medium text-gray-700">Pronunciation:</p>
-            <p className="text-lg italic text-gray-600">{explanation.pronunciation}</p>
+            <p className="text-lg italic text-gray-600">{finalExplanation.pronunciation}</p>
           </div>
-          <p className="mt-4 text-gray-600">{explanation.reasoning}</p>
+          <p className="mt-4 text-gray-600">{finalExplanation.reasoning}</p>
         </CardContent>
       </Card>
       <ReportForm
