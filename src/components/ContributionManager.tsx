@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { SeverityLevel } from "@/data/types";
 import { useToast } from "@/hooks/use-toast";
 import { combinationExplanations } from "@/data/combinations";
+import { supabase } from "@/integrations/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 
 interface Contribution {
   prefix: string;
@@ -34,6 +36,23 @@ interface ContributionManagerProps {
 const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerProps) => {
   const { toast } = useToast();
 
+  // Fetch approved combinations from Supabase
+  const { data: approvedCombinations, refetch } = useQuery({
+    queryKey: ['approved-combinations'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('approved_combinations')
+        .select('*');
+      
+      if (error) {
+        console.error('Error fetching approved combinations:', error);
+        throw error;
+      }
+      
+      return data;
+    },
+  });
+
   // This would typically come from a database, but for now we'll get it from localStorage
   const getContributions = (): Contribution[] => {
     const savedContributions = localStorage.getItem('contributions');
@@ -48,42 +67,63 @@ const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerP
   const contributions = getContributions();
   const reports = getReports();
 
-  const handleApprove = (contribution: Contribution) => {
-    // Add to combinations database
-    const key = `${contribution.prefix}-${contribution.suffix}`;
-    combinationExplanations[key] = {
-      plainLanguage: contribution.plainLanguage,
-      severity: contribution.severity,
-      reasoning: contribution.reasoning,
-      pronunciation: contribution.pronunciation,
-    };
+  const handleApprove = async (contribution: Contribution) => {
+    try {
+      // Add to Supabase database
+      const { error } = await supabase
+        .from('approved_combinations')
+        .insert({
+          prefix: contribution.prefix,
+          suffix: contribution.suffix,
+          plain_language: contribution.plainLanguage,
+          severity: contribution.severity,
+          reasoning: contribution.reasoning,
+          pronunciation: contribution.pronunciation,
+        });
 
-    // Save to localStorage
-    const savedCombinations = localStorage.getItem('approvedCombinations') || '{}';
-    const combinations = JSON.parse(savedCombinations);
-    combinations[key] = {
-      plainLanguage: contribution.plainLanguage,
-      severity: contribution.severity,
-      reasoning: contribution.reasoning,
-      pronunciation: contribution.pronunciation,
-    };
-    localStorage.setItem('approvedCombinations', JSON.stringify(combinations));
+      if (error) {
+        console.error('Error inserting approved combination:', error);
+        toast({
+          title: "Error",
+          description: "Failed to approve contribution. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
 
-    // Remove from pending contributions
-    const updatedContributions = contributions.filter(
-      c => !(c.prefix === contribution.prefix && c.suffix === contribution.suffix)
-    );
-    localStorage.setItem('contributions', JSON.stringify(updatedContributions));
+      // Add to combinations database
+      const key = `${contribution.prefix}-${contribution.suffix}`;
+      combinationExplanations[key] = {
+        plainLanguage: contribution.plainLanguage,
+        severity: contribution.severity,
+        reasoning: contribution.reasoning,
+        pronunciation: contribution.pronunciation,
+      };
 
-    // Show success toast
-    toast({
-      title: "Contribution approved",
-      description: `${contribution.prefix}${contribution.suffix} has been added to the database.`,
-    });
+      // Remove from pending contributions
+      const updatedContributions = contributions.filter(
+        c => !(c.prefix === contribution.prefix && c.suffix === contribution.suffix)
+      );
+      localStorage.setItem('contributions', JSON.stringify(updatedContributions));
 
-    // Force a re-render by updating localStorage
-    localStorage.setItem('contributions', JSON.stringify(updatedContributions));
-    window.location.reload(); // Refresh to show updated state
+      // Refetch the approved combinations
+      refetch();
+
+      // Show success toast
+      toast({
+        title: "Contribution approved",
+        description: `${contribution.prefix}${contribution.suffix} has been added to the database.`,
+      });
+
+      window.location.reload(); // Refresh to show updated state
+    } catch (error) {
+      console.error('Error in handleApprove:', error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleDismissReport = (reportIndex: number) => {
@@ -107,6 +147,30 @@ const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerP
           </DialogTitle>
         </DialogHeader>
         <div className="space-y-6">
+          {/* Approved Combinations Section */}
+          <div className="p-4 bg-[#e0e5ec] rounded-lg shadow-[inset_-3px_-3px_6px_rgba(255,255,255,0.8),inset_3px_3px_6px_rgba(0,0,0,0.15)]">
+            <h3 className="text-lg font-semibold mb-2 text-medical-dark">Approved Combinations</h3>
+            <ul className="space-y-2">
+              {approvedCombinations && approvedCombinations.length > 0 ? (
+                approvedCombinations.map((combination) => (
+                  <li key={combination.id} className="p-3 bg-white rounded-lg shadow-sm">
+                    <div>
+                      <h4 className="font-medium text-medical-dark">
+                        {combination.prefix + combination.suffix}
+                      </h4>
+                      <p className="text-sm text-gray-600">{combination.plain_language}</p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Severity: {combination.severity}
+                      </p>
+                    </div>
+                  </li>
+                ))
+              ) : (
+                <li className="text-medical-dark">No approved combinations</li>
+              )}
+            </ul>
+          </div>
+
           {/* Contributions Section */}
           <div className="p-4 bg-[#e0e5ec] rounded-lg shadow-[inset_-3px_-3px_6px_rgba(255,255,255,0.8),inset_3px_3px_6px_rgba(0,0,0,0.15)]">
             <h3 className="text-lg font-semibold mb-2 text-medical-dark">Recent Contributions</h3>
