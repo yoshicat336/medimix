@@ -12,5 +12,10 @@ export const supabase = createClient<Database>(
       persistSession: true,
       autoRefreshToken: true,
     },
+    global: {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+      },
+    },
   }
 );
