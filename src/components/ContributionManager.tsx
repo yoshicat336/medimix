@@ -36,18 +36,31 @@ interface ContributionManagerProps {
 const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerProps) => {
   const { toast } = useToast();
 
-  // Fetch approved combinations from Supabase with error handling
-  const { data: approvedCombinations, refetch } = useQuery({
+  // Enhanced error handling and retry logic for Supabase queries
+  const { data: approvedCombinations, isError, isLoading, refetch } = useQuery({
     queryKey: ['approved-combinations'],
     queryFn: async () => {
-      return fetchFromSupabase(async () => {
-        return await supabase
-          .from('approved_combinations')
-          .select('*');
-      });
+      try {
+        return await fetchFromSupabase(async () => {
+          const response = await supabase
+            .from('approved_combinations')
+            .select('*');
+          return response;
+        });
+      } catch (error) {
+        console.error('Failed to fetch approved combinations:', error);
+        toast({
+          title: "Error fetching data",
+          description: "Please try again later or contact support if the issue persists.",
+          variant: "destructive",
+        });
+        throw error;
+      }
     },
-    retry: 3, // Retry failed requests up to 3 times
+    retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+    staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
+    refetchOnWindowFocus: false,
   });
 
   const getContributions = (): Contribution[] => {
@@ -65,7 +78,6 @@ const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerP
 
   const handleApprove = async (contribution: Contribution) => {
     try {
-      // Add to Supabase database
       const { error } = await supabase
         .from('approved_combinations')
         .insert({
@@ -87,7 +99,6 @@ const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerP
         return;
       }
 
-      // Add to combinations database
       const key = `${contribution.prefix}-${contribution.suffix}`;
       combinationExplanations[key] = {
         plainLanguage: contribution.plainLanguage,
@@ -96,22 +107,19 @@ const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerP
         pronunciation: contribution.pronunciation,
       };
 
-      // Remove from pending contributions
       const updatedContributions = contributions.filter(
         c => !(c.prefix === contribution.prefix && c.suffix === contribution.suffix)
       );
       localStorage.setItem('contributions', JSON.stringify(updatedContributions));
 
-      // Refetch the approved combinations
-      refetch();
+      await refetch();
 
-      // Show success toast
       toast({
         title: "Contribution approved",
         description: `${contribution.prefix}${contribution.suffix} has been added to the database.`,
       });
 
-      window.location.reload(); // Refresh to show updated state
+      window.location.reload();
     } catch (error) {
       console.error('Error in handleApprove:', error);
       toast({
@@ -131,7 +139,7 @@ const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerP
       description: "The report has been removed from the list.",
     });
 
-    window.location.reload(); // Refresh to show updated state
+    window.location.reload();
   };
 
   return (
@@ -146,25 +154,31 @@ const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerP
           {/* Approved Combinations Section */}
           <div className="p-4 bg-[#e0e5ec] rounded-lg shadow-[inset_-3px_-3px_6px_rgba(255,255,255,0.8),inset_3px_3px_6px_rgba(0,0,0,0.15)]">
             <h3 className="text-lg font-semibold mb-2 text-medical-dark">Approved Combinations</h3>
-            <ul className="space-y-2">
-              {approvedCombinations && approvedCombinations.length > 0 ? (
-                approvedCombinations.map((combination) => (
-                  <li key={combination.id} className="p-3 bg-white rounded-lg shadow-sm">
-                    <div>
-                      <h4 className="font-medium text-medical-dark">
-                        {combination.prefix + combination.suffix}
-                      </h4>
-                      <p className="text-sm text-gray-600">{combination.plain_language}</p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        Severity: {combination.severity}
-                      </p>
-                    </div>
-                  </li>
-                ))
-              ) : (
-                <li className="text-medical-dark">No approved combinations</li>
-              )}
-            </ul>
+            {isLoading ? (
+              <p className="text-medical-dark">Loading approved combinations...</p>
+            ) : isError ? (
+              <p className="text-red-500">Error loading approved combinations. Please try again.</p>
+            ) : (
+              <ul className="space-y-2">
+                {approvedCombinations && approvedCombinations.length > 0 ? (
+                  approvedCombinations.map((combination) => (
+                    <li key={combination.id} className="p-3 bg-white rounded-lg shadow-sm">
+                      <div>
+                        <h4 className="font-medium text-medical-dark">
+                          {combination.prefix + combination.suffix}
+                        </h4>
+                        <p className="text-sm text-gray-600">{combination.plain_language}</p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Severity: {combination.severity}
+                        </p>
+                      </div>
+                    </li>
+                  ))
+                ) : (
+                  <li className="text-medical-dark">No approved combinations</li>
+                )}
+              </ul>
+            )}
           </div>
 
           {/* Contributions Section */}
