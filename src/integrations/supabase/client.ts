@@ -9,18 +9,19 @@ export const supabase = createClient<Database>(
   SUPABASE_ANON_KEY,
   {
     auth: {
-      persistSession: true,
       autoRefreshToken: true,
-      detectSessionInUrl: true,
+      persistSession: true,
+      detectSessionInUrl: true
     },
     global: {
       headers: {
         'apikey': SUPABASE_ANON_KEY,
         'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization'
       },
-    },
-    db: {
-      schema: 'public'
     },
     realtime: {
       params: {
@@ -30,19 +31,29 @@ export const supabase = createClient<Database>(
   }
 );
 
-// Add error handling wrapper
+// Add error handling wrapper with better error logging
 export const fetchFromSupabase = async <T>(
   operation: () => Promise<{ data: T | null; error: any }>
 ) => {
   try {
     const { data, error } = await operation();
     if (error) {
-      console.error('Supabase operation error:', error);
+      console.error('Supabase operation error:', {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code
+      });
       throw error;
     }
     return data;
   } catch (error) {
-    console.error('Supabase fetch error:', error);
+    console.error('Supabase fetch error:', {
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+      code: error.code
+    });
     throw error;
   }
 };
