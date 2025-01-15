@@ -29,3 +29,20 @@ export const supabase = createClient<Database>(
     }
   }
 );
+
+// Add error handling wrapper
+export const fetchFromSupabase = async <T>(
+  operation: () => Promise<{ data: T | null; error: any }>
+) => {
+  try {
+    const { data, error } = await operation();
+    if (error) {
+      console.error('Supabase operation error:', error);
+      throw error;
+    }
+    return data;
+  } catch (error) {
+    console.error('Supabase fetch error:', error);
+    throw error;
+  }
+};

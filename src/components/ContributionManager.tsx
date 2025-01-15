@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { SeverityLevel } from "@/data/types";
 import { useToast } from "@/hooks/use-toast";
 import { combinationExplanations } from "@/data/combinations";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase, fetchFromSupabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 
 interface Contribution {
@@ -36,24 +36,20 @@ interface ContributionManagerProps {
 const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerProps) => {
   const { toast } = useToast();
 
-  // Fetch approved combinations from Supabase
+  // Fetch approved combinations from Supabase with error handling
   const { data: approvedCombinations, refetch } = useQuery({
     queryKey: ['approved-combinations'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('approved_combinations')
-        .select('*');
-      
-      if (error) {
-        console.error('Error fetching approved combinations:', error);
-        throw error;
-      }
-      
-      return data;
+      return fetchFromSupabase(async () => {
+        return await supabase
+          .from('approved_combinations')
+          .select('*');
+      });
     },
+    retry: 3, // Retry failed requests up to 3 times
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
 
-  // This would typically come from a database, but for now we'll get it from localStorage
   const getContributions = (): Contribution[] => {
     const savedContributions = localStorage.getItem('contributions');
     return savedContributions ? JSON.parse(savedContributions) : [];
