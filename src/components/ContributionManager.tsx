@@ -11,6 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { combinationExplanations } from "@/data/combinations";
 import { supabase, fetchFromSupabase } from "@/integrations/supabase/client";
 import { prefixes, suffixes } from "@/data/medicalTerms";
+import { useQuery } from "@tanstack/react-query";
 
 interface Contribution {
   prefix: string;
