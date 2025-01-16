@@ -7,8 +7,9 @@ import {
   SelectValue,
 } from "@/components/custom/select";
 import { Button } from "@/components/ui/button";
-import { Shuffle } from "lucide-react";
+import { Shuffle, Plus } from "lucide-react";
 import { prefixes, suffixes } from "@/data/medicalTerms";
+import { useToast } from "@/hooks/use-toast";
 
 interface TermSelectorsProps {
   selectedPrefix: string;
@@ -23,6 +24,8 @@ const TermSelectors = ({
   onPrefixChange,
   onSuffixChange,
 }: TermSelectorsProps) => {
+  const { toast } = useToast();
+  
   const selectTriggerClasses = `
     bg-[#e0e5ec] border-none 
     shadow-[-5px_-5px_10px_rgba(255,255,255,0.8),5px_5px_10px_rgba(0,0,0,0.2)]
@@ -44,17 +47,41 @@ const TermSelectors = ({
     onSuffixChange(suffixes[randomIndex].value);
   };
 
+  const handleSuggestMissingPrefix = () => {
+    toast({
+      title: "Suggest Missing Prefix",
+      description: "This feature will be available soon. Please check back later.",
+    });
+  };
+
+  const handleSuggestMissingSuffix = () => {
+    toast({
+      title: "Suggest Missing Suffix",
+      description: "This feature will be available soon. Please check back later.",
+    });
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
       <div className="space-y-2">
-        <Button 
-          variant="outline" 
-          onClick={handleSuggestPrefix}
-          className="w-full bg-[#e0e5ec] border-none shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.2)] hover:shadow-[-2px_-2px_4px_rgba(255,255,255,0.9),2px_2px_4px_rgba(0,0,0,0.15)]"
-        >
-          <Shuffle className="mr-2 h-4 w-4" />
-          Suggest Prefix
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            onClick={handleSuggestPrefix}
+            className="flex-1 bg-[#e0e5ec] border-none shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.2)] hover:shadow-[-2px_-2px_4px_rgba(255,255,255,0.9),2px_2px_4px_rgba(0,0,0,0.15)]"
+          >
+            <Shuffle className="mr-2 h-4 w-4" />
+            Random Prefix
+          </Button>
+          <Button
+            variant="outline"
+            onClick={handleSuggestMissingPrefix}
+            className="bg-[#e0e5ec] border-none shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.2)] hover:shadow-[-2px_-2px_4px_rgba(255,255,255,0.9),2px_2px_4px_rgba(0,0,0,0.15)]"
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Suggest New
+          </Button>
+        </div>
         <div className="shadow-[inset_-3px_-3px_6px_rgba(255,255,255,0.8),inset_3px_3px_6px_rgba(0,0,0,0.15)] rounded-xl p-2">
           <Select onValueChange={onPrefixChange} value={selectedPrefix}>
             <SelectTrigger className={selectTriggerClasses}>
@@ -76,14 +103,24 @@ const TermSelectors = ({
       </div>
 
       <div className="space-y-2">
-        <Button 
-          variant="outline" 
-          onClick={handleSuggestSuffix}
-          className="w-full bg-[#e0e5ec] border-none shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.2)] hover:shadow-[-2px_-2px_4px_rgba(255,255,255,0.9),2px_2px_4px_rgba(0,0,0,0.15)]"
-        >
-          <Shuffle className="mr-2 h-4 w-4" />
-          Suggest Suffix
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            variant="outline" 
+            onClick={handleSuggestSuffix}
+            className="flex-1 bg-[#e0e5ec] border-none shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.2)] hover:shadow-[-2px_-2px_4px_rgba(255,255,255,0.9),2px_2px_4px_rgba(0,0,0,0.15)]"
+          >
+            <Shuffle className="mr-2 h-4 w-4" />
+            Random Suffix
+          </Button>
+          <Button
+            variant="outline"
+            onClick={handleSuggestMissingSuffix}
+            className="bg-[#e0e5ec] border-none shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.2)] hover:shadow-[-2px_-2px_4px_rgba(255,255,255,0.9),2px_2px_4px_rgba(0,0,0,0.15)]"
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Suggest New
+          </Button>
+        </div>
         <div className="shadow-[inset_-3px_-3px_6px_rgba(255,255,255,0.8),inset_3px_3px_6px_rgba(0,0,0,0.15)] rounded-xl p-2">
           <Select onValueChange={onSuffixChange} value={selectedSuffix}>
             <SelectTrigger className={selectTriggerClasses}>
