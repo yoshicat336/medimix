@@ -5,6 +5,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { SeverityLevel } from "@/data/types";
 import { useToast } from "@/hooks/use-toast";
 import { combinationExplanations } from "@/data/combinations";
@@ -36,30 +37,25 @@ interface ContributionManagerProps {
 const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerProps) => {
   const { toast } = useToast();
 
-  // Enhanced error handling and retry logic for Supabase queries
-  const { data: approvedCombinations, isError, isLoading, refetch } = useQuery({
+  const { data: approvedCombinations, isError, error, isLoading, refetch } = useQuery({
     queryKey: ['approved-combinations'],
     queryFn: async () => {
       try {
-        return await fetchFromSupabase(async () => {
+        const data = await fetchFromSupabase(async () => {
           const response = await supabase
             .from('approved_combinations')
             .select('*');
           return response;
         });
+        return data || [];
       } catch (error) {
         console.error('Failed to fetch approved combinations:', error);
-        toast({
-          title: "Error fetching data",
-          description: "Please try again later or contact support if the issue persists.",
-          variant: "destructive",
-        });
         throw error;
       }
     },
     retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
-    staleTime: 1000 * 60 * 5, // Cache data for 5 minutes
+    staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
   });
 
@@ -115,7 +111,7 @@ const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerP
       await refetch();
 
       toast({
-        title: "Contribution approved",
+        title: "Success",
         description: `${contribution.prefix}${contribution.suffix} has been added to the database.`,
       });
 
@@ -135,8 +131,8 @@ const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerP
     localStorage.setItem('reports', JSON.stringify(updatedReports));
     
     toast({
-      title: "Report dismissed",
-      description: "The report has been removed from the list.",
+      title: "Success",
+      description: "The report has been dismissed.",
     });
 
     window.location.reload();
@@ -157,7 +153,11 @@ const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerP
             {isLoading ? (
               <p className="text-medical-dark">Loading approved combinations...</p>
             ) : isError ? (
-              <p className="text-red-500">Error loading approved combinations. Please try again.</p>
+              <Alert variant="destructive" className="mb-4">
+                <AlertDescription>
+                  {error?.message || "Error loading approved combinations. Please try again."}
+                </AlertDescription>
+              </Alert>
             ) : (
               <ul className="space-y-2">
                 {approvedCombinations && approvedCombinations.length > 0 ? (
