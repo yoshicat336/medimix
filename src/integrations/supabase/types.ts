@@ -42,6 +42,33 @@ export type Database = {
         }
         Relationships: []
       }
+      term_suggestions: {
+        Row: {
+          created_at: string
+          id: string
+          meaning: string
+          status: string | null
+          term: string
+          type: Database["public"]["Enums"]["term_type"]
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          meaning: string
+          status?: string | null
+          term: string
+          type: Database["public"]["Enums"]["term_type"]
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          meaning?: string
+          status?: string | null
+          term?: string
+          type?: Database["public"]["Enums"]["term_type"]
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -50,7 +77,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      term_type: "prefix" | "suffix"
     }
     CompositeTypes: {
       [_ in never]: never

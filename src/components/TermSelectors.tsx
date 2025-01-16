@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Shuffle, Plus } from "lucide-react";
 import { prefixes, suffixes } from "@/data/medicalTerms";
-import { useToast } from "@/hooks/use-toast";
+import SuggestTermForm from "./SuggestTermForm";
 
 interface TermSelectorsProps {
   selectedPrefix: string;
@@ -24,7 +24,8 @@ const TermSelectors = ({
   onPrefixChange,
   onSuffixChange,
 }: TermSelectorsProps) => {
-  const { toast } = useToast();
+  const [isSuggestPrefixOpen, setIsSuggestPrefixOpen] = useState(false);
+  const [isSuggestSuffixOpen, setIsSuggestSuffixOpen] = useState(false);
   
   const selectTriggerClasses = `
     bg-[#e0e5ec] border-none 
@@ -47,20 +48,6 @@ const TermSelectors = ({
     onSuffixChange(suffixes[randomIndex].value);
   };
 
-  const handleSuggestMissingPrefix = () => {
-    toast({
-      title: "Suggest Missing Prefix",
-      description: "This feature will be available soon. Please check back later.",
-    });
-  };
-
-  const handleSuggestMissingSuffix = () => {
-    toast({
-      title: "Suggest Missing Suffix",
-      description: "This feature will be available soon. Please check back later.",
-    });
-  };
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
       <div className="space-y-2">
@@ -75,7 +62,7 @@ const TermSelectors = ({
           </Button>
           <Button
             variant="outline"
-            onClick={handleSuggestMissingPrefix}
+            onClick={() => setIsSuggestPrefixOpen(true)}
             className="bg-[#e0e5ec] border-none shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.2)] hover:shadow-[-2px_-2px_4px_rgba(255,255,255,0.9),2px_2px_4px_rgba(0,0,0,0.15)]"
           >
             <Plus className="mr-2 h-4 w-4" />
@@ -114,7 +101,7 @@ const TermSelectors = ({
           </Button>
           <Button
             variant="outline"
-            onClick={handleSuggestMissingSuffix}
+            onClick={() => setIsSuggestSuffixOpen(true)}
             className="bg-[#e0e5ec] border-none shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.2)] hover:shadow-[-2px_-2px_4px_rgba(255,255,255,0.9),2px_2px_4px_rgba(0,0,0,0.15)]"
           >
             <Plus className="mr-2 h-4 w-4" />
@@ -140,6 +127,17 @@ const TermSelectors = ({
           </Select>
         </div>
       </div>
+
+      <SuggestTermForm
+        isOpen={isSuggestPrefixOpen}
+        onClose={() => setIsSuggestPrefixOpen(false)}
+        type="prefix"
+      />
+      <SuggestTermForm
+        isOpen={isSuggestSuffixOpen}
+        onClose={() => setIsSuggestSuffixOpen(false)}
+        type="suffix"
+      />
     </div>
   );
 };
