@@ -15,6 +15,12 @@ export const supabase = createClient<Database>(
     },
     db: {
       schema: 'public'
+    },
+    global: {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
     }
   }
 );
@@ -30,13 +36,20 @@ export const fetchFromSupabase = async <T>(
         message: error.message,
         details: error.details,
         hint: error.hint,
-        code: error.code
+        code: error.code,
+        status: error.status
       });
       throw error;
     }
     return data;
   } catch (error) {
-    console.error('Supabase fetch error:', error);
+    console.error('Supabase fetch error:', {
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+      code: error.code,
+      status: error.status
+    });
     throw error;
   }
 };
