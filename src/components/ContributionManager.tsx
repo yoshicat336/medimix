@@ -13,6 +13,7 @@ import ApprovedCombinationsSection from "./contribution/ApprovedCombinationsSect
 import ContributionsSection from "./contribution/ContributionsSection";
 import ReportsSection from "./contribution/ReportsSection";
 import { Contribution, Report } from "@/data/types";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface ContributionManagerProps {
   isOpen: boolean;
@@ -22,19 +23,23 @@ interface ContributionManagerProps {
 
 const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerProps) => {
   const { toast } = useToast();
+  const queryClient = useQueryClient();
 
-  const getContributions = (): Contribution[] => {
-    const savedContributions = localStorage.getItem('contributions');
-    return savedContributions ? JSON.parse(savedContributions) : [];
-  };
+  const { data: contributions = [] } = useQuery({
+    queryKey: ['contributions'],
+    queryFn: () => {
+      const savedContributions = localStorage.getItem('contributions');
+      return savedContributions ? JSON.parse(savedContributions) : [];
+    },
+  });
 
-  const getReports = (): Report[] => {
-    const savedReports = localStorage.getItem('reports');
-    return savedReports ? JSON.parse(savedReports) : [];
-  };
-
-  const contributions = getContributions();
-  const reports = getReports();
+  const { data: reports = [] } = useQuery({
+    queryKey: ['reports'],
+    queryFn: () => {
+      const savedReports = localStorage.getItem('reports');
+      return savedReports ? JSON.parse(savedReports) : [];
+    },
+  });
 
   const handleApproveTermSuggestion = async (suggestion: any) => {
     try {
@@ -59,12 +64,12 @@ const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerP
         });
       }
 
+      await queryClient.invalidateQueries({ queryKey: ['term-suggestions'] });
+
       toast({
         title: "Success",
         description: `${suggestion.term} has been approved and added to the ${suggestion.type} list.`,
       });
-
-      window.location.reload();
     } catch (error) {
       console.error('Error approving term suggestion:', error);
       toast({
@@ -83,6 +88,8 @@ const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerP
         .eq('id', suggestion.id);
 
       if (error) throw error;
+
+      await queryClient.invalidateQueries({ queryKey: ['term-suggestions'] });
 
       toast({
         title: "Success",
@@ -133,13 +140,12 @@ const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerP
         c => !(c.prefix === contribution.prefix && c.suffix === contribution.suffix)
       );
       localStorage.setItem('contributions', JSON.stringify(updatedContributions));
+      await queryClient.invalidateQueries({ queryKey: ['contributions'] });
 
       toast({
         title: "Success",
         description: `${contribution.prefix}${contribution.suffix} has been added to the database.`,
       });
-
-      window.location.reload();
     } catch (error) {
       console.error('Error in handleApprove:', error);
       toast({
@@ -150,16 +156,15 @@ const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerP
     }
   };
 
-  const handleDismissReport = (reportIndex: number) => {
+  const handleDismissReport = async (reportIndex: number) => {
     const updatedReports = reports.filter((_, index) => index !== reportIndex);
     localStorage.setItem('reports', JSON.stringify(updatedReports));
+    await queryClient.invalidateQueries({ queryKey: ['reports'] });
     
     toast({
       title: "Success",
       description: "The report has been dismissed.",
     });
-
-    window.location.reload();
   };
 
   return (
