@@ -16,10 +16,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
+// This schema matches the required fields in the Supabase table
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
 });
+
+type FormValues = z.infer<typeof formSchema>;
 
 type TeamApplicationFormProps = {
   open: boolean;
@@ -27,7 +30,7 @@ type TeamApplicationFormProps = {
 };
 
 export function TeamApplicationForm({ open, onOpenChange }: TeamApplicationFormProps) {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -35,11 +38,14 @@ export function TeamApplicationForm({ open, onOpenChange }: TeamApplicationFormP
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: FormValues) {
     try {
       const { error } = await supabase
         .from("team_applications")
-        .insert(values);
+        .insert({
+          name: values.name,
+          email: values.email,
+        });
 
       if (error) throw error;
 
