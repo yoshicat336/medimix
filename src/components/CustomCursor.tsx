@@ -1,6 +1,14 @@
 import { useEffect } from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const CustomCursor = () => {
+  const isMobile = useIsMobile();
+
+  // Don't render anything on mobile
+  if (isMobile) {
+    return null;
+  }
+
   useEffect(() => {
     class ArrowPointer {
       root: HTMLElement;
@@ -138,13 +146,9 @@ const CustomCursor = () => {
     }
 
     const cursor = new ArrowPointer();
-    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-      document.onmousemove = function (event) {
-        cursor.move(event);
-      };
-    } else {
-      cursor.remove();
-    }
+    document.onmousemove = function (event) {
+      cursor.move(event);
+    };
 
     return () => {
       cursor.remove();
