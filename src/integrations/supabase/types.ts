@@ -205,11 +205,3 @@ export type CompositeTypes<
   : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
     ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
-
-export interface TeamApplication {
-  id: string;
-  name: string;
-  email: string;
-  status: string;
-  created_at: string;
-}
