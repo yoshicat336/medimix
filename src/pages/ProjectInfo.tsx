@@ -2,9 +2,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Github } from "lucide-react";
+import { Github, UserPlus } from "lucide-react";
+import { toast } from "sonner";
 
 const ProjectInfo = () => {
+  const handleJoinTeam = () => {
+    // You can customize this action based on your needs
+    toast.success("Thanks for your interest! We'll be in touch soon.");
+    window.open("mailto:august@example.com?subject=Joining%20the%20MediMix%20Team", "_blank");
+  };
+
   return (
     <div className="min-h-screen bg-[#e0e5ec] p-6">
       <div className="max-w-4xl mx-auto space-y-6">
@@ -45,6 +52,16 @@ const ProjectInfo = () => {
                 <li>Built with Lovable - AI-powered web development platform - Bring your ideas to life</li>
                 <li>Powered by OpenAI - Advanced language model technology</li>
               </ul>
+            </div>
+
+            <div className="flex justify-center mt-8">
+              <Button 
+                onClick={handleJoinTeam}
+                className="bg-medical hover:bg-medical-dark transition-colors"
+              >
+                <UserPlus className="mr-2 h-5 w-5" />
+                Join the Team
+              </Button>
             </div>
           </CardContent>
         </Card>
