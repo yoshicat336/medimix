@@ -39,7 +39,7 @@ export function TeamApplicationForm({ open, onOpenChange }: TeamApplicationFormP
     try {
       const { error } = await supabase
         .from("team_applications")
-        .insert([values]);
+        .insert(values);
 
       if (error) throw error;
 
