@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface SuggestTermFormProps {
   isOpen: boolean;
@@ -17,16 +19,29 @@ interface SuggestTermFormProps {
   type: "prefix" | "suffix";
 }
 
-interface FormData {
-  term: string;
-  meaning: string;
-}
+const formSchema = z.object({
+  term: z.string()
+    .min(2, "Term must be at least 2 characters")
+    .max(50, "Term must be less than 50 characters")
+    .regex(/^[a-zA-Z]+$/, "Term must contain only letters"),
+  meaning: z.string()
+    .min(5, "Meaning must be at least 5 characters")
+    .max(200, "Meaning must be less than 200 characters"),
+});
+
+type FormData = z.infer<typeof formSchema>;
 
 const SuggestTermForm = ({ isOpen, onClose, type }: SuggestTermFormProps) => {
-  const { register, handleSubmit, reset } = useForm<FormData>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+  });
   const { toast } = useToast();
 
   const onSubmit = async (data: FormData) => {
+    if (isSubmitting) return;
+    
+    setIsSubmitting(true);
     try {
       const { error } = await supabase
         .from('term_suggestions')
@@ -52,6 +67,8 @@ const SuggestTermForm = ({ isOpen, onClose, type }: SuggestTermFormProps) => {
         description: "Failed to submit suggestion. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -71,6 +88,9 @@ const SuggestTermForm = ({ isOpen, onClose, type }: SuggestTermFormProps) => {
               placeholder={`Enter new ${type}`}
               className="bg-[#e0e5ec] border-none shadow-[inset_-3px_-3px_6px_rgba(255,255,255,0.8),inset_3px_3px_6px_rgba(0,0,0,0.1)]"
             />
+            {errors.term && (
+              <p className="text-sm text-red-500">{errors.term.message}</p>
+            )}
           </div>
 
           <div className="space-y-2">
@@ -80,14 +100,18 @@ const SuggestTermForm = ({ isOpen, onClose, type }: SuggestTermFormProps) => {
               placeholder={`Enter the meaning of this ${type}`}
               className="bg-[#e0e5ec] border-none shadow-[inset_-3px_-3px_6px_rgba(255,255,255,0.8),inset_3px_3px_6px_rgba(0,0,0,0.1)]"
             />
+            {errors.meaning && (
+              <p className="text-sm text-red-500">{errors.meaning.message}</p>
+            )}
           </div>
 
           <div className="flex justify-end pt-4">
             <Button
               type="submit"
+              disabled={isSubmitting}
               className="bg-medical hover:bg-medical-dark text-white shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.1)]"
             >
-              Submit Suggestion
+              {isSubmitting ? "Submitting..." : "Submit Suggestion"}
             </Button>
           </div>
         </form>
