@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Shuffle, Plus } from "lucide-react";
 import { prefixes, suffixes } from "@/data/medicalTerms";
+import { combinationExplanations } from "@/data/combinations";
 import SuggestTermForm from "./SuggestTermForm";
 import { useToast } from "@/hooks/use-toast";
 
@@ -41,12 +42,37 @@ const TermSelectors = ({
     transition-all duration-300
   `.trim();
 
+  const getValidCombinations = (type: 'prefix' | 'suffix') => {
+    const terms = type === 'prefix' ? prefixes : suffixes;
+    return terms.filter(term => {
+      if (type === 'prefix') {
+        return suffixes.some(suffix => 
+          combinationExplanations[`${term.value}-${suffix.value}`]
+        );
+      } else {
+        return prefixes.some(prefix => 
+          combinationExplanations[`${prefix.value}-${term.value}`]
+        );
+      }
+    });
+  };
+
   const handleRandomSelection = async (type: 'prefix' | 'suffix') => {
     try {
       setIsLoading(true);
-      const terms = type === 'prefix' ? prefixes : suffixes;
-      const randomIndex = Math.floor(Math.random() * terms.length);
-      const selectedTerm = terms[randomIndex].value;
+      const validTerms = getValidCombinations(type);
+      
+      if (validTerms.length === 0) {
+        toast({
+          title: "No valid combinations",
+          description: `No ${type}es found with existing combinations.`,
+          variant: "destructive",
+        });
+        return;
+      }
+
+      const randomIndex = Math.floor(Math.random() * validTerms.length);
+      const selectedTerm = validTerms[randomIndex].value;
       
       if (type === 'prefix') {
         onPrefixChange(selectedTerm);
@@ -56,7 +82,7 @@ const TermSelectors = ({
 
       toast({
         title: "Random term selected",
-        description: `Selected ${type}: ${terms[randomIndex].label}`,
+        description: `Selected ${type}: ${validTerms[randomIndex].label}`,
       });
     } catch (error) {
       console.error(`Error selecting random ${type}:`, error);
