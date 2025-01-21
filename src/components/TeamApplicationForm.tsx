@@ -30,6 +30,7 @@ type TeamApplicationFormProps = {
 };
 
 export function TeamApplicationForm({ open, onOpenChange }: TeamApplicationFormProps) {
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,6 +40,9 @@ export function TeamApplicationForm({ open, onOpenChange }: TeamApplicationFormP
   });
 
   async function onSubmit(values: FormValues) {
+    if (isSubmitting) return;
+    
+    setIsSubmitting(true);
     try {
       const { error } = await supabase
         .from("team_applications")
@@ -55,6 +59,8 @@ export function TeamApplicationForm({ open, onOpenChange }: TeamApplicationFormP
     } catch (error) {
       console.error("Error submitting application:", error);
       toast.error("Failed to submit application. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -92,7 +98,9 @@ export function TeamApplicationForm({ open, onOpenChange }: TeamApplicationFormP
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">Submit Application</Button>
+            <Button type="submit" className="w-full" disabled={isSubmitting}>
+              {isSubmitting ? "Submitting..." : "Submit Application"}
+            </Button>
           </form>
         </Form>
       </DialogContent>
