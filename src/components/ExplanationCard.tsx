@@ -27,14 +27,20 @@ const ExplanationCard = ({
     queryKey: ['approved-combination', prefix, suffix],
     queryFn: async () => {
       try {
-        const { data, error } = await supabase
+        console.log('Fetching approved combination for:', prefix, suffix);
+        const { data, error: supabaseError } = await supabase
           .from('approved_combinations')
           .select('*')
           .eq('prefix', prefix)
           .eq('suffix', suffix)
-          .single();
+          .maybeSingle();
 
-        if (error) throw error;
+        if (supabaseError) {
+          console.error('Supabase error:', supabaseError);
+          throw supabaseError;
+        }
+
+        console.log('Received data:', data);
 
         if (data) {
           return {
@@ -47,11 +53,13 @@ const ExplanationCard = ({
 
         return null;
       } catch (err) {
-        console.error('Error fetching approved combination:', err);
+        console.error('Error in query function:', err);
         throw err;
       }
     },
     enabled: !!prefix && !!suffix,
+    retry: 2,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
   });
 
   // Use approved explanation if available, otherwise fall back to hardcoded explanation
@@ -76,6 +84,7 @@ const ExplanationCard = ({
       <Card className="bg-[#e0e5ec] border-none shadow-[-10px_-10px_20px_rgba(255,255,255,0.8),10px_10px_20px_rgba(0,0,0,0.1)]">
         <CardContent className="py-6">
           <p className="text-red-500">Error loading explanation. Please try again later.</p>
+          <p className="text-sm text-gray-500 mt-2">Technical details: {error.message}</p>
         </CardContent>
       </Card>
     );
