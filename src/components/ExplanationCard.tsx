@@ -23,37 +23,63 @@ const ExplanationCard = ({
 }: ExplanationCardProps) => {
   const [isReportFormOpen, setIsReportFormOpen] = useState(false);
 
-  const { data: approvedExplanation } = useQuery({
+  const { data: approvedExplanation, isLoading, error } = useQuery({
     queryKey: ['approved-combination', prefix, suffix],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('approved_combinations')
-        .select('*')
-        .eq('prefix', prefix)
-        .eq('suffix', suffix)
-        .single();
+      try {
+        const { data, error } = await supabase
+          .from('approved_combinations')
+          .select('*')
+          .eq('prefix', prefix)
+          .eq('suffix', suffix)
+          .single();
 
-      if (error) {
-        console.error('Error fetching approved combination:', error);
+        if (error) throw error;
+
+        if (data) {
+          return {
+            plainLanguage: data.plain_language,
+            severity: data.severity,
+            reasoning: data.reasoning,
+            pronunciation: data.pronunciation,
+          } as CombinationExplanation;
+        }
+
         return null;
+      } catch (err) {
+        console.error('Error fetching approved combination:', err);
+        throw err;
       }
-
-      if (data) {
-        return {
-          plainLanguage: data.plain_language,
-          severity: data.severity,
-          reasoning: data.reasoning,
-          pronunciation: data.pronunciation,
-        } as CombinationExplanation;
-      }
-
-      return null;
     },
     enabled: !!prefix && !!suffix,
   });
 
   // Use approved explanation if available, otherwise fall back to hardcoded explanation
   const finalExplanation = approvedExplanation || explanation;
+
+  if (isLoading) {
+    return (
+      <Card className="bg-[#e0e5ec] border-none shadow-[-10px_-10px_20px_rgba(255,255,255,0.8),10px_10px_20px_rgba(0,0,0,0.1)]">
+        <CardContent className="py-6">
+          <div className="animate-pulse space-y-4">
+            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (error) {
+    console.error('Error loading explanation:', error);
+    return (
+      <Card className="bg-[#e0e5ec] border-none shadow-[-10px_-10px_20px_rgba(255,255,255,0.8),10px_10px_20px_rgba(0,0,0,0.1)]">
+        <CardContent className="py-6">
+          <p className="text-red-500">Error loading explanation. Please try again later.</p>
+        </CardContent>
+      </Card>
+    );
+  }
 
   if (!finalExplanation) {
     return (

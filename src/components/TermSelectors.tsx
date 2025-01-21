@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Shuffle, Plus } from "lucide-react";
 import { prefixes, suffixes } from "@/data/medicalTerms";
 import SuggestTermForm from "./SuggestTermForm";
+import { useToast } from "@/hooks/use-toast";
 
 interface TermSelectorsProps {
   selectedPrefix: string;
@@ -26,6 +27,8 @@ const TermSelectors = ({
 }: TermSelectorsProps) => {
   const [isSuggestPrefixOpen, setIsSuggestPrefixOpen] = useState(false);
   const [isSuggestSuffixOpen, setIsSuggestSuffixOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
   
   const selectTriggerClasses = `
     bg-[#e0e5ec] border-none 
@@ -38,14 +41,33 @@ const TermSelectors = ({
     transition-all duration-300
   `.trim();
 
-  const handleSuggestPrefix = () => {
-    const randomIndex = Math.floor(Math.random() * prefixes.length);
-    onPrefixChange(prefixes[randomIndex].value);
-  };
+  const handleRandomSelection = async (type: 'prefix' | 'suffix') => {
+    try {
+      setIsLoading(true);
+      const terms = type === 'prefix' ? prefixes : suffixes;
+      const randomIndex = Math.floor(Math.random() * terms.length);
+      const selectedTerm = terms[randomIndex].value;
+      
+      if (type === 'prefix') {
+        onPrefixChange(selectedTerm);
+      } else {
+        onSuffixChange(selectedTerm);
+      }
 
-  const handleSuggestSuffix = () => {
-    const randomIndex = Math.floor(Math.random() * suffixes.length);
-    onSuffixChange(suffixes[randomIndex].value);
+      toast({
+        title: "Random term selected",
+        description: `Selected ${type}: ${terms[randomIndex].label}`,
+      });
+    } catch (error) {
+      console.error(`Error selecting random ${type}:`, error);
+      toast({
+        title: "Error",
+        description: `Failed to select random ${type}. Please try again.`,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -54,15 +76,17 @@ const TermSelectors = ({
         <div className="flex gap-2">
           <Button 
             variant="outline" 
-            onClick={handleSuggestPrefix}
+            onClick={() => handleRandomSelection('prefix')}
+            disabled={isLoading}
             className="flex-1 bg-[#e0e5ec] border-none shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.2)] hover:shadow-[-2px_-2px_4px_rgba(255,255,255,0.9),2px_2px_4px_rgba(0,0,0,0.15)]"
           >
             <Shuffle className="mr-2 h-4 w-4" />
-            Random Prefix
+            {isLoading ? "Selecting..." : "Random Prefix"}
           </Button>
           <Button
             variant="outline"
             onClick={() => setIsSuggestPrefixOpen(true)}
+            disabled={isLoading}
             className="bg-[#e0e5ec] border-none shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.2)] hover:shadow-[-2px_-2px_4px_rgba(255,255,255,0.9),2px_2px_4px_rgba(0,0,0,0.15)]"
           >
             <Plus className="mr-2 h-4 w-4" />
@@ -74,7 +98,7 @@ const TermSelectors = ({
             <SelectTrigger className={selectTriggerClasses}>
               <SelectValue placeholder="Select prefix" />
             </SelectTrigger>
-            <SelectContent className="bg-[rgba(255,255,255,0.25)] backdrop-blur-[12px] border border-[rgba(255,255,255,0.18)] shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] rounded-lg overflow-hidden">
+            <SelectContent className="bg-white backdrop-blur-[12px] border border-[rgba(255,255,255,0.18)] shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] rounded-lg overflow-hidden">
               {prefixes.map((prefix) => (
                 <SelectItem 
                   key={prefix.value} 
@@ -93,15 +117,17 @@ const TermSelectors = ({
         <div className="flex gap-2">
           <Button 
             variant="outline" 
-            onClick={handleSuggestSuffix}
+            onClick={() => handleRandomSelection('suffix')}
+            disabled={isLoading}
             className="flex-1 bg-[#e0e5ec] border-none shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.2)] hover:shadow-[-2px_-2px_4px_rgba(255,255,255,0.9),2px_2px_4px_rgba(0,0,0,0.15)]"
           >
             <Shuffle className="mr-2 h-4 w-4" />
-            Random Suffix
+            {isLoading ? "Selecting..." : "Random Suffix"}
           </Button>
           <Button
             variant="outline"
             onClick={() => setIsSuggestSuffixOpen(true)}
+            disabled={isLoading}
             className="bg-[#e0e5ec] border-none shadow-[-3px_-3px_6px_rgba(255,255,255,0.8),3px_3px_6px_rgba(0,0,0,0.2)] hover:shadow-[-2px_-2px_4px_rgba(255,255,255,0.9),2px_2px_4px_rgba(0,0,0,0.15)]"
           >
             <Plus className="mr-2 h-4 w-4" />
@@ -113,7 +139,7 @@ const TermSelectors = ({
             <SelectTrigger className={selectTriggerClasses}>
               <SelectValue placeholder="Select suffix" />
             </SelectTrigger>
-            <SelectContent className="bg-[rgba(255,255,255,0.25)] backdrop-blur-[12px] border border-[rgba(255,255,255,0.18)] shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] rounded-lg overflow-hidden">
+            <SelectContent className="bg-white backdrop-blur-[12px] border border-[rgba(255,255,255,0.18)] shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] rounded-lg overflow-hidden">
               {suffixes.map((suffix) => (
                 <SelectItem 
                   key={suffix.value} 
