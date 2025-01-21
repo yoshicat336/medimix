@@ -11,7 +11,6 @@ import { Shuffle, Plus } from "lucide-react";
 import { prefixes, suffixes } from "@/data/medicalTerms";
 import { combinationExplanations } from "@/data/combinations";
 import SuggestTermForm from "./SuggestTermForm";
-import { useToast } from "@/hooks/use-toast";
 
 interface TermSelectorsProps {
   selectedPrefix: string;
@@ -29,7 +28,6 @@ const TermSelectors = ({
   const [isSuggestPrefixOpen, setIsSuggestPrefixOpen] = useState(false);
   const [isSuggestSuffixOpen, setIsSuggestSuffixOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { toast } = useToast();
   
   const selectTriggerClasses = `
     bg-[#e0e5ec] border-none 
@@ -46,13 +44,15 @@ const TermSelectors = ({
     const terms = type === 'prefix' ? prefixes : suffixes;
     return terms.filter(term => {
       if (type === 'prefix') {
-        return suffixes.some(suffix => 
-          combinationExplanations[`${term.value}-${suffix.value}`]
-        );
+        return suffixes.some(suffix => {
+          const combo = combinationExplanations[`${term.value}-${suffix.value}`];
+          return combo && combo.plainLanguage && combo.severity && combo.reasoning && combo.pronunciation;
+        });
       } else {
-        return prefixes.some(prefix => 
-          combinationExplanations[`${prefix.value}-${term.value}`]
-        );
+        return prefixes.some(prefix => {
+          const combo = combinationExplanations[`${prefix.value}-${term.value}`];
+          return combo && combo.plainLanguage && combo.severity && combo.reasoning && combo.pronunciation;
+        });
       }
     });
   };
@@ -62,35 +62,18 @@ const TermSelectors = ({
       setIsLoading(true);
       const validTerms = getValidCombinations(type);
       
-      if (validTerms.length === 0) {
-        toast({
-          title: "No valid combinations",
-          description: `No ${type}es found with existing combinations.`,
-          variant: "destructive",
-        });
-        return;
+      if (validTerms.length > 0) {
+        const randomIndex = Math.floor(Math.random() * validTerms.length);
+        const selectedTerm = validTerms[randomIndex].value;
+        
+        if (type === 'prefix') {
+          onPrefixChange(selectedTerm);
+        } else {
+          onSuffixChange(selectedTerm);
+        }
       }
-
-      const randomIndex = Math.floor(Math.random() * validTerms.length);
-      const selectedTerm = validTerms[randomIndex].value;
-      
-      if (type === 'prefix') {
-        onPrefixChange(selectedTerm);
-      } else {
-        onSuffixChange(selectedTerm);
-      }
-
-      toast({
-        title: "Random term selected",
-        description: `Selected ${type}: ${validTerms[randomIndex].label}`,
-      });
     } catch (error) {
       console.error(`Error selecting random ${type}:`, error);
-      toast({
-        title: "Error",
-        description: `Failed to select random ${type}. Please try again.`,
-        variant: "destructive",
-      });
     } finally {
       setIsLoading(false);
     }
