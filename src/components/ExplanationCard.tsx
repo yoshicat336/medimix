@@ -28,24 +28,24 @@ const ExplanationCard = ({
     queryFn: async () => {
       try {
         console.log('Fetching approved combination for:', prefix, suffix);
-        const { data, error: supabaseError } = await supabase
+        const response = await supabase
           .from('approved_combinations')
           .select('*')
           .eq('prefix', prefix)
           .eq('suffix', suffix)
           .maybeSingle();
 
-        if (supabaseError) {
-          console.error('Supabase error:', supabaseError);
-          throw supabaseError;
+        if (response.error) {
+          console.error('Supabase error:', response.error);
+          throw response.error;
         }
 
-        console.log('Received data:', data);
-        return data ? {
-          plainLanguage: data.plain_language,
-          severity: data.severity,
-          reasoning: data.reasoning,
-          pronunciation: data.pronunciation,
+        console.log('Received data:', response.data);
+        return response.data ? {
+          plainLanguage: response.data.plain_language,
+          severity: response.data.severity,
+          reasoning: response.data.reasoning,
+          pronunciation: response.data.pronunciation,
         } as CombinationExplanation : null;
       } catch (err) {
         console.error('Error in query function:', err);
