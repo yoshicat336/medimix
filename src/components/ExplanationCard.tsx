@@ -41,25 +41,21 @@ const ExplanationCard = ({
         }
 
         console.log('Received data:', data);
-
-        if (data) {
-          return {
-            plainLanguage: data.plain_language,
-            severity: data.severity,
-            reasoning: data.reasoning,
-            pronunciation: data.pronunciation,
-          } as CombinationExplanation;
-        }
-
-        return null;
+        return data ? {
+          plainLanguage: data.plain_language,
+          severity: data.severity,
+          reasoning: data.reasoning,
+          pronunciation: data.pronunciation,
+        } as CombinationExplanation : null;
       } catch (err) {
         console.error('Error in query function:', err);
         throw err;
       }
     },
     enabled: !!prefix && !!suffix,
-    retry: 2,
+    retry: 3,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
+    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
   });
 
   // Use approved explanation if available, otherwise fall back to hardcoded explanation
