@@ -17,7 +17,7 @@ interface PinPadProps {
 const PinPad = ({ isOpen, onClose, onCorrectPin }: PinPadProps) => {
   const [pin, setPin] = useState("");
 
-  const validPins = ["1234", "5678", "9012", "3456"]; // Match with team members in ContributionManager
+  const validPins = ["0312", "5678", "9012", "3456"]; // Match with team members in ContributionManager
 
   const handleNumberClick = (number: string) => {
     if (pin.length < 4) {
