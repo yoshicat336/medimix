@@ -6,19 +6,14 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 
 export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
   auth: {
-    persistSession: true,
     autoRefreshToken: true,
-    detectSessionInUrl: true,
-    flowType: 'implicit',
-  },
-  realtime: {
-    params: {
-      eventsPerSecond: 10,
-    },
+    persistSession: true,
+    detectSessionInUrl: true
   },
   global: {
     headers: {
-      'Content-Type': 'application/json',
-    },
-  },
+      'apikey': supabaseAnonKey,
+      'Authorization': `Bearer ${supabaseAnonKey}`
+    }
+  }
 });
