@@ -44,24 +44,33 @@ export type Database = {
       }
       team_applications: {
         Row: {
+          admin_notes: string | null
           created_at: string
           email: string
           id: string
           name: string
+          reviewed_at: string | null
+          reviewed_by: string | null
           status: string
         }
         Insert: {
+          admin_notes?: string | null
           created_at?: string
           email: string
           id?: string
           name: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           status?: string
         }
         Update: {
+          admin_notes?: string | null
           created_at?: string
           email?: string
           id?: string
           name?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
           status?: string
         }
         Relationships: []
@@ -93,6 +102,27 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["user_role"] | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["user_role"] | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["user_role"] | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -102,6 +132,7 @@ export type Database = {
     }
     Enums: {
       term_type: "prefix" | "suffix"
+      user_role: "admin" | "user"
     }
     CompositeTypes: {
       [_ in never]: never

@@ -12,7 +12,7 @@ import TermSuggestionsSection from "./contribution/TermSuggestionsSection";
 import ApprovedCombinationsSection from "./contribution/ApprovedCombinationsSection";
 import ContributionsSection from "./contribution/ContributionsSection";
 import ReportsSection from "./contribution/ReportsSection";
-import { Contribution, Report } from "@/data/types";
+import { Contribution } from "@/data/types";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface ContributionManagerProps {
@@ -21,9 +21,25 @@ interface ContributionManagerProps {
   greeting: string;
 }
 
+const getTeamMemberName = (pinCode: string) => {
+  const teamMembers: Record<string, string> = {
+    "1234": "August",
+    "5678": "Sarah",
+    "9012": "Michael",
+    "3456": "Emma",
+    // Add more team members and their pin codes here
+  };
+  return teamMembers[pinCode] || "Admin";
+};
+
 const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerProps) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  // Get the pin code from localStorage (set during PinPad entry)
+  const pinCode = localStorage.getItem('adminPinCode') || "";
+  const teamMemberName = getTeamMemberName(pinCode);
+  const personalizedGreeting = `${greeting}, ${teamMemberName}`;
 
   const { data: contributions = [] } = useQuery({
     queryKey: ['contributions'],
@@ -172,7 +188,7 @@ const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerP
       <DialogContent className="bg-[#e0e5ec] border-none shadow-[-10px_-10px_20px_rgba(255,255,255,0.8),10px_10px_20px_rgba(0,0,0,0.1)]">
         <DialogHeader>
           <DialogTitle className="text-center text-xl font-bold text-medical-dark">
-            {greeting}
+            {personalizedGreeting}
           </DialogTitle>
         </DialogHeader>
         <div className="space-y-6">
