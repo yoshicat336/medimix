@@ -23,29 +23,28 @@ const ExplanationCard = ({
 }: ExplanationCardProps) => {
   const [isReportFormOpen, setIsReportFormOpen] = useState(false);
 
-  const { data: approvedExplanation, isLoading, error } = useQuery({
+  const { data: approvedExplanation, isLoading } = useQuery({
     queryKey: ['approved-combination', prefix, suffix],
     queryFn: async () => {
       try {
         console.log('Fetching approved combination for:', prefix, suffix);
-        const response = await supabase
+        const { data, error } = await supabase
           .from('approved_combinations')
           .select('*')
           .eq('prefix', prefix)
           .eq('suffix', suffix)
           .maybeSingle();
 
-        if (response.error) {
-          console.error('Supabase error:', response.error);
-          throw response.error;
+        if (error) {
+          console.error('Supabase error:', error);
+          throw error;
         }
 
-        console.log('Received data:', response.data);
-        return response.data ? {
-          plainLanguage: response.data.plain_language,
-          severity: response.data.severity,
-          reasoning: response.data.reasoning,
-          pronunciation: response.data.pronunciation,
+        return data ? {
+          plainLanguage: data.plain_language,
+          severity: data.severity,
+          reasoning: data.reasoning,
+          pronunciation: data.pronunciation,
         } as CombinationExplanation : null;
       } catch (err) {
         console.error('Error in query function:', err);
@@ -53,7 +52,7 @@ const ExplanationCard = ({
       }
     },
     enabled: !!prefix && !!suffix,
-    retry: 3,
+    retry: 2,
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 10000),
     staleTime: 1000 * 60 * 5, // Cache for 5 minutes
   });
@@ -69,18 +68,6 @@ const ExplanationCard = ({
             <div className="h-4 bg-gray-200 rounded w-3/4"></div>
             <div className="h-4 bg-gray-200 rounded w-1/2"></div>
           </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (error) {
-    console.error('Error loading explanation:', error);
-    return (
-      <Card className="bg-[#e0e5ec] border-none shadow-[-10px_-10px_20px_rgba(255,255,255,0.8),10px_10px_20px_rgba(0,0,0,0.1)]">
-        <CardContent className="py-6">
-          <p className="text-red-500">Error loading explanation. Please try again later.</p>
-          <p className="text-sm text-gray-500 mt-2">Technical details: {error.message}</p>
         </CardContent>
       </Card>
     );
