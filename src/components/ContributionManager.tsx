@@ -23,7 +23,7 @@ interface ContributionManagerProps {
 
 const getTeamMemberName = (pinCode: string) => {
   const teamMembers: Record<string, string> = {
-    "1234": "August",
+    "0312": "August",
     "5678": "Sarah",
     "9012": "Michael",
     "3456": "Emma",
