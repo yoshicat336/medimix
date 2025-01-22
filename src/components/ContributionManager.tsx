@@ -39,7 +39,7 @@ const ContributionManager = ({ isOpen, onClose, greeting }: ContributionManagerP
   // Get the pin code from localStorage (set during PinPad entry)
   const pinCode = localStorage.getItem('adminPinCode') || "";
   const teamMemberName = getTeamMemberName(pinCode);
-  const personalizedGreeting = `${greeting}, ${teamMemberName}`;
+  const personalizedGreeting = greeting;
 
   const { data: contributions = [] } = useQuery({
     queryKey: ['contributions'],
